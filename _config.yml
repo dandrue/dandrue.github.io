@@ -1,7 +1,7 @@
 # Site settings
 title: Diego A. Rueda
 description: 'Presentation WebPage'
-url: 'http://dandrue.github.io'
+url: ''
 baseurl: ''
 profilepic: '/images/profile.jpg'
 bkimage: '/images/bk1.jpg'
@@ -11,11 +11,8 @@ font_awesome: 'XXXXXXXXXX.js'
 author:
   name: 'Diego A. Rueda'
   email: d.ruedaq@gmail.com
-  #twitter_username: thomzuehlke
-  #facebook_username: joshgerdes
   github_username:  dandrue
   linkedin_username:  diego-a-rueda-7b36b821a
-  #meetup_name: Azure-Meetup-Rostock-MV
 
 # Build settings
 destination: _site
