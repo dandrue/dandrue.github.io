@@ -2,12 +2,12 @@
 - name: Number Classifier
   gh_user: dandrue
   repo: NumberClassifier
-  img: 
+  img: "/images/Hand.png"
 
 - name: Fuzzy Controller
   gh_user: dandrue
   repo: FuzzyController
-  img: 
+  img: "/images/Fuzzy.png"
  
 - name: Genetic Optimization
   gh_user: dandrue
