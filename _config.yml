@@ -1,7 +1,7 @@
 # Site settings
 title: Diego A. Rueda
 description: 'Presentation WebPage'
-url: ''
+url: 'http://dandrue.github.io'
 baseurl: ''
 profilepic: '/images/profile.jpg'
 bkimage: '/images/bk1.jpg'
@@ -29,5 +29,6 @@ kramdown:
   # do not replace newlines by <br>s
   hard_wrap: false
 
-#plugins: ['jekyll-paginate']
+plugins:
+    - jekyll-seo-tag
 exclude: ['README.md', 'screenshot-overview.png']
