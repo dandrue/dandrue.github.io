@@ -11,8 +11,8 @@ font_awesome: 'XXXXXXXXXX.js'
 author:
   name: 'Diego A. Rueda'
   email: d.ruedaq@gmail.com
-  github_username:  dandrue
-  linkedin_username:  diego-a-rueda-7b36b821a
+  github_username: dandrue
+  linkedin_username: diego-a-rueda-7b36b821a
 
 # Build settings
 destination: _site
