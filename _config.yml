@@ -1,7 +1,7 @@
 # Site settings
 title: Diego A. Rueda
 description: 'Presentation WebPage'
-url: 'https://dandrue.github.io/'
+url: 'https://dandrue.github.io'
 baseurl: ''
 profilepic: '/images/profile.jpg'
 bkimage: '/images/bk1.jpg'
