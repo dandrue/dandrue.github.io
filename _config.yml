@@ -6,7 +6,7 @@ baseurl: ''
 profilepic: '/images/profile.jpg'
 bkimage: '/images/bk1.jpg'
 google_analytics: UA-XXXXXX-X
-font_awesome: '/fontawesome/js/fontawesome.min.js'
+font_awesome: 'fontawesome/js/fontawesome.min.js'
 
 author:
   name: 'Diego A. Rueda'
@@ -31,5 +31,5 @@ kramdown:
 
 #plugins:
  # - jekyll-seo-tag
-    
+
 exclude: ['README.md', 'screenshot-overview.png']
