@@ -13,3 +13,18 @@
   gh_user: dandrue
   repo: GeneticOptimization
   img: '/images/Genetic.png'
+  
+- name: DataCamp Projects
+  gh_user: dandrue
+  repo: DataCamp_Projects
+  img: "/images/4.png"
+
+- name: Operation Software
+  gh_user: dandrue
+  repo: OperationSoftware
+  img: "/imges/flask.png"
+  
+- name: Interface
+  gh_user: dandrue
+  repo: Interface
+  img: "/images/prosthetic.png"
