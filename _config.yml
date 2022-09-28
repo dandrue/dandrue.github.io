@@ -30,5 +30,6 @@ kramdown:
   hard_wrap: false
 
 plugins:
-    - jekyll-seo-tag
+  - jekyll-seo-tag
+    
 exclude: ['README.md', 'screenshot-overview.png']
