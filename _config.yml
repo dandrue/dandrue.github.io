@@ -29,7 +29,7 @@ kramdown:
   # do not replace newlines by <br>s
   hard_wrap: false
 
-plugins:
-  - jekyll-seo-tag
+#plugins:
+ # - jekyll-seo-tag
     
 exclude: ['README.md', 'screenshot-overview.png']
