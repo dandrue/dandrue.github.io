@@ -6,7 +6,7 @@ baseurl: ''
 profilepic: '/images/profile.jpg'
 bkimage: '/images/bk1.jpg'
 google_analytics: UA-XXXXXX-X
-font_awesome: '/js/main.js'
+font_awesome: ''
 
 author:
   name: 'Diego A. Rueda'
