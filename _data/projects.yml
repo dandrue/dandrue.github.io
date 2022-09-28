@@ -7,7 +7,7 @@
 - name: Fuzzy Controller
   gh_user: dandrue
   repo: FuzzyController
-  img: "https://github.com/dandrue/FuzzyController/blob/main/images/Figure_1.png"
+  img: "/images/Figure_1.png"
  
 - name: Genetic Optimization
   gh_user: dandrue
