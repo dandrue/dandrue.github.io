@@ -22,7 +22,7 @@
 - name: Operation Software
   gh_user: dandrue
   repo: OperationSoftware
-  img: "/imges/flask.png"
+  img: "/images/flask.png"
   
 - name: Interface
   gh_user: dandrue
