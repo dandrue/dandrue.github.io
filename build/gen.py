@@ -1,0 +1,360 @@
+"""Generate the portfolio index.html with hand-built SVG drawings.
+
+Run: python3 gen.py <output_dir>
+"""
+import math
+import sys
+from pathlib import Path
+
+COS = math.cos(math.radians(30))
+SIN = 0.5
+
+C = {
+    "cw": "var(--cw)",
+    "hw": "var(--hw)",
+    "san": "var(--san)",
+    "vent": "var(--vent)",
+    "storm": "var(--storm)",
+    "grey": "var(--greywater)",
+    "reuse": "var(--reclaim)",
+}
+
+
+def iso(ox, oy, s):
+    def p(x, y, z):
+        return (ox + (x - y) * COS * s, oy + (x + y) * SIN * s - z * s)
+    return p
+
+
+def fmt(pt):
+    return f"{pt[0]:.1f},{pt[1]:.1f}"
+
+
+def poly(pts, cls="", extra=""):
+    return f'<polygon class="{cls}" points="{" ".join(fmt(q) for q in pts)}" {extra}/>'
+
+
+def pipe(pts, color, width=3.4, cls="pipe", delay=None, draw=True):
+    d = "M" + " L".join(fmt(q) for q in pts)
+    anim = ""
+    if draw:
+        anim = f' pathLength="1" class="{cls} draw" style="--d:{delay or 0}s"'
+    else:
+        anim = f' class="{cls}"'
+    return f'<path d="{d}" stroke="{color}" stroke-width="{width}"{anim}/>'
+
+
+def text(x, y, s, cls="lbl", anchor="start", extra=""):
+    return f'<text x="{x:.1f}" y="{y:.1f}" class="{cls}" text-anchor="{anchor}" {extra}>{s}</text>'
+
+
+def box_faces(p, x0, x1, y0, y1, z0, z1, cls_top, cls_side, cls_front):
+    top = [p(x0, y0, z1), p(x1, y0, z1), p(x1, y1, z1), p(x0, y1, z1)]
+    front_y = [p(x0, y1, z1), p(x1, y1, z1), p(x1, y1, z0), p(x0, y1, z0)]
+    side_x = [p(x1, y0, z1), p(x1, y1, z1), p(x1, y1, z0), p(x1, y0, z0)]
+    return poly(top, cls_top) + poly(front_y, cls_front) + poly(side_x, cls_side)
+
+
+# ---------------------------------------------------------------- hero riser
+
+def hero_svg():
+    p = iso(262, 300, 52)
+    out = []
+    t = 0.22
+    X0, X1, Y0, Y1 = 0, 4.2, 0, 3.0
+    risers = [  # name, x, y, bottom, top, color, size label
+        ("CW", 0.9, 0.6, -0.9, 5.6, C["cw"], '2" CW'),
+        ("HW", 1.3, 0.6, -0.9, 5.2, C["hw"], '1-1/2" HW'),
+        ("SAN", 2.5, 0.6, -0.9, 4.6, C["san"], '4" SAN'),
+        ("V", 3.0, 0.6, 1.4, 6.0, C["vent"], '2" V'),
+    ]
+
+    def slab(z):
+        return box_faces(p, X0, X1, Y0, Y1, z - t, z, "slab-top", "slab-side", "slab-front")
+
+    def sleeve(x, y, z):
+        a, b = p(x, y, z - t - 0.06), p(x, y, z + 0.14)
+        return f'<path d="M{fmt(a)} L{fmt(b)}" class="sleeve"/>'
+
+    # 1. everything below level 1 slab
+    for i, (_, x, y, zb, zt, col, _) in enumerate(risers):
+        if zb < -t:
+            out.append(pipe([p(x, y, zb), p(x, y, -t)], col, delay=0.15 * i))
+    out.append(slab(0))
+    for _, x, y, zb, zt, col, _ in risers:
+        if zb < 0:
+            out.append(sleeve(x, y, 0))
+    # 2. between the slabs
+    for i, (_, x, y, zb, zt, col, _) in enumerate(risers):
+        out.append(pipe([p(x, y, max(zb, -t)), p(x, y, 3 - t)], col, delay=0.35 + 0.15 * i))
+    # vent stack ties into the sanitary stack on a 45
+    out.append(pipe([p(2.5, 0.6, 0.9), p(3.0, 0.6, 1.4)], C["vent"], 3.4, delay=0.95))
+    # level 1 branches
+    out.append(pipe([p(0.9, 0.6, 0.8), p(0.9, 1.9, 0.8), p(1.7, 1.9, 0.8)], C["cw"], 3, delay=0.9))
+    out.append(pipe([p(1.3, 0.6, 0.6), p(1.3, 1.6, 0.6), p(1.7, 1.6, 0.6)], C["hw"], 3, delay=1.0))
+    # level 2 sanitary branch hangs under the slab, then rises through it
+    out.append(pipe([p(2.5, 0.6, 2.55), p(2.5, 2.4, 2.55), p(2.5, 2.4, 3 - t)], C["san"], 3.4, delay=1.1))
+    out.append(slab(3))
+    for _, x, y, zb, zt, col, _ in risers:
+        out.append(sleeve(x, y, 3))
+    out.append(sleeve(2.5, 2.4, 3))
+    # 3. above level 2
+    for i, (_, x, y, zb, zt, col, _) in enumerate(risers):
+        out.append(pipe([p(x, y, 3 - t), p(x, y, zt)], col, delay=0.8 + 0.15 * i))
+    out.append(pipe([p(2.5, 2.4, 3 - t), p(2.5, 2.4, 3.35)], C["san"], 3.4, delay=1.3))
+    out.append(pipe([p(0.9, 0.6, 3.9), p(0.9, 2.4, 3.9), p(2.1, 2.4, 3.9), p(2.1, 2.4, 3.5)], C["cw"], 3, delay=1.4))
+    out.append(pipe([p(1.3, 0.6, 3.65), p(1.3, 2.1, 3.65), p(2.1, 2.1, 3.65), p(2.1, 2.1, 3.4)], C["hw"], 3, delay=1.5))
+    # fixture symbol at the end of the level 2 branches
+    fx = p(2.27, 2.3, 3.38)
+    out.append(f'<ellipse cx="{fx[0]:.1f}" cy="{fx[1]:.1f}" rx="17" ry="9" class="fixture"/>')
+
+    # labels at the top of each riser
+    for _, x, y, zb, zt, col, lab in risers:
+        q = p(x, y, zt)
+        out.append(f'<path d="M{fmt(q)} l10,-8 h6" class="leader"/>')
+        out.append(text(q[0] + 19, q[1] - 4, lab, "lbl lbl-pipe"))
+    # level lines
+    for z, name in ((0, "Level 1"), (3, "Level 2")):
+        a = p(X0, Y1, z)
+        out.append(f'<path d="M{a[0]-8:.1f},{a[1]:.1f} H18" class="level-line"/>')
+        out.append(text(18, a[1] - 7, name, "lbl lbl-level"))
+    # one sleeve callout
+    s = p(2.5, 2.4, 3.05)
+    out.append(f'<path d="M{s[0]+6:.1f},{s[1]+4:.1f} l46,26 h40" class="leader"/>')
+    out.append(text(s[0] + 96, s[1] + 34, 'Sleeve through slab', "lbl"))
+
+    body = "\n".join(out)
+    return (
+        '<svg class="riser" viewBox="0 0 560 520" role="img" aria-labelledby="riser-t riser-d" '
+        'xmlns="http://www.w3.org/2000/svg">'
+        '<title id="riser-t">Isometric plumbing riser diagram</title>'
+        '<desc id="riser-d">Cold water, hot water, sanitary and vent risers rising through two '
+        'floor slabs, with sleeves where each pipe crosses a slab and branches to a fixture on level 2.</desc>'
+        f"{body}</svg>"
+    )
+
+
+# --------------------------------------------------- work: reroute around beam
+
+def reroute_svg():
+    p = iso(150, 255, 80)
+    out = []
+    y = 1.0
+    z0 = 2.45
+    # original clashing route, ghosted
+    new = [p(0, y, z0), p(1.3, y, z0), p(1.8, y, 1.95), p(2.2, y, 1.95), p(2.7, y, z0), p(4, y, z0)]
+    out.append(pipe(new, C["cw"], 4, draw=False))
+    out.append(box_faces(p, 1.85, 2.15, -0.6, 2.4, 2.2, 2.75, "beam-top", "beam-side", "beam-front"))
+    out.append(f'<path d="M{fmt(p(0, y, z0))} L{fmt(p(4, y, z0))}" class="ghost"/>')
+    m = p(2.0, y, z0)
+    out.append(f'<g class="clash"><circle cx="{m[0]:.1f}" cy="{m[1]:.1f}" r="9"/>'
+               f'<path d="M{m[0]-4:.1f},{m[1]-4:.1f} l8,8 M{m[0]+4:.1f},{m[1]-4:.1f} l-8,8"/></g>')
+    a = p(0.4, y, z0)
+    out.append(f'<path d="M{fmt(a)} l-6,-26 h-10" class="leader"/>')
+    out.append(text(a[0] - 18, a[1] - 30, '2" CW', "lbl lbl-pipe", "end"))
+    b = p(2.0, -0.6, 2.75)
+    out.append(f'<path d="M{fmt(b)} l14,-22 h10" class="leader"/>')
+    out.append(text(b[0] + 27, b[1] - 18, "Beam", "lbl"))
+    out.append(f'<path d="M{m[0]+9:.1f},{m[1]-5:.1f} l30,-30 h12" class="leader"/>')
+    out.append(text(m[0] + 54, m[1] - 31, "Clash on the original route", "lbl"))
+    return svg_wrap("Rerouting a cold water line under a beam",
+                    "A cold water pipe drops on 45 degree offsets to pass under a steel beam; "
+                    "the original straight route through the beam is shown dashed with a clash marker.",
+                    "".join(out), "0 0 480 300")
+
+
+# ------------------------------------------------- work: water reuse schematic
+
+def reuse_svg():
+    out = []
+
+    def node(x, y, w, label, cls="node"):
+        out.append(f'<rect x="{x}" y="{y}" width="{w}" height="38" rx="2" class="{cls}"/>')
+        out.append(text(x + w / 2, y + 24, label, "lbl lbl-node", "middle"))
+
+    def run(pts, color):
+        d = "M" + " L".join(f"{a},{b}" for a, b in pts)
+        out.append(f'<path d="{d}" stroke="{color}" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/>')
+
+    node(16, 40, 118, "Roof drains")
+    node(16, 214, 118, "Showers, basins")
+    node(178, 40, 118, "Rainwater tank")
+    node(178, 214, 118, "Greywater tank")
+    node(178, 127, 118, "Filter and UV", "node node-treat")
+    node(340, 127, 124, "Toilets, irrigation")
+    run([(134, 59), (172, 59)], C["storm"])
+    run([(134, 233), (172, 233)], C["grey"])
+    run([(237, 78), (237, 121)], C["storm"])
+    run([(237, 214), (237, 171)], C["grey"])
+    run([(296, 146), (334, 146)], C["reuse"])
+    out.append(text(16, 290, "Rainwater", "lbl key", extra=f'fill="{C["storm"]}"'))
+    out.append(text(96, 290, "Greywater", "lbl key", extra=f'fill="{C["grey"]}"'))
+    out.append(text(178, 290, "Reclaimed supply (non-potable)", "lbl key", extra=f'fill="{C["reuse"]}"'))
+    defs = ('<defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" '
+            'orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="arrow"/></marker></defs>')
+    return svg_wrap("Rainwater and greywater reuse",
+                    "Roof drains feed a rainwater tank and showers and basins feed a greywater tank; both pass "
+                    "through filtration and UV treatment and supply toilets and irrigation with non-potable water.",
+                    defs + "".join(out), "0 0 480 300")
+
+
+# --------------------------------------------------- work: reviewed sheet
+
+def sheet_svg():
+    out = []
+    out.append('<rect x="20" y="20" width="440" height="260" class="sheet-border"/>')
+    out.append('<rect x="372" y="20" width="88" height="260" class="sheet-tb"/>')
+    for yy in (70, 110, 150, 230):
+        out.append(f'<path d="M372,{yy} H460" class="sheet-rule"/>')
+    out.append(text(380, 44, "Plumbing", "lbl lbl-tb"))
+    out.append(text(380, 60, "shop drawing", "lbl lbl-tb"))
+    out.append(text(380, 96, "Level 3", "lbl lbl-tb"))
+    out.append(text(380, 136, "Rev 1", "lbl lbl-tb"))
+    out.append(text(380, 256, "P-301", "lbl lbl-sheetno"))
+    # walls and pipes
+    out.append('<path d="M40,60 H350 M40,240 H350 M40,60 V240 M200,60 V150 M350,60 V240" class="wall"/>')
+    out.append(f'<path d="M60,110 H330" stroke="{C["cw"]}" stroke-width="3" class="pipe"/>')
+    out.append(f'<path d="M60,124 H300" stroke="{C["hw"]}" stroke-width="3" class="pipe"/>')
+    out.append(f'<path d="M80,190 H320 M150,190 V150" stroke="{C["san"]}" stroke-width="3.4" class="pipe"/>')
+    # revision clouds
+    out.append(cloud(212, 92, 128, 46))
+    out.append(cloud(122, 140, 70, 66))
+    out.append('<path d="M320,214 l9,-16 l9,16 z" class="delta"/>')
+    out.append(text(329, 211, "1", "lbl lbl-delta", "middle"))
+    return svg_wrap("A shop drawing sheet with review markups",
+                    "A plumbing shop drawing sheet with a title block, cold water, hot water and sanitary runs, "
+                    "and two revision clouds marking review comments.",
+                    "".join(out), "0 0 480 300")
+
+
+def cloud(x, y, w, h, r=7):
+    pts = []
+    perim = 2 * (w + h)
+    n = max(8, int(perim / (2 * r)))
+    step = perim / n
+    def at(d):
+        d %= perim
+        if d < w:
+            return x + d, y
+        d -= w
+        if d < h:
+            return x + w, y + d
+        d -= h
+        if d < w:
+            return x + w - d, y + h
+        d -= w
+        return x, y + h - d
+    start = at(0)
+    path = [f"M{start[0]:.1f},{start[1]:.1f}"]
+    for i in range(1, n + 1):
+        q = at(i * step)
+        path.append(f"A{r},{r} 0 0 1 {q[0]:.1f},{q[1]:.1f}")
+    return f'<path d="{" ".join(path)}" class="cloud"/>'
+
+
+# ------------------------------------------- tools: tags and dimensions
+
+def tags_svg():
+    out = []
+
+    def plan(ox, tagged):
+        g = []
+        g.append(f'<path d="M{ox+16},40 V260 M{ox+196},40 V260" class="grid"/>')
+        for gx, gl in ((ox + 16, "3"), (ox + 196, "4")):
+            g.append(f'<circle cx="{gx}" cy="26" r="11" class="bubble"/>')
+            g.append(text(gx, 30, gl, "lbl lbl-bubble", "middle"))
+        g.append(f'<path d="M{ox},110 H{ox+212}" stroke="{C["cw"]}" stroke-width="3" class="pipe"/>')
+        g.append(f'<path d="M{ox},150 H{ox+212}" stroke="{C["hw"]}" stroke-width="3" class="pipe"/>')
+        g.append(f'<path d="M{ox},206 H{ox+212} M{ox+120},206 V178" stroke="{C["san"]}" stroke-width="3.4" class="pipe"/>')
+        if tagged:
+            for yy, lab, w in ((110, '1" CW', 40), (150, '3/4" HW', 52), (206, '4" SAN', 48)):
+                tx = ox + 60
+                g.append(f'<path d="M{tx},{yy} l10,-14" class="leader"/>')
+                g.append(f'<rect x="{tx+10}" y="{yy-30}" width="{w}" height="18" rx="2" class="tag"/>')
+                g.append(text(tx + 10 + w / 2, yy - 17, lab, "lbl lbl-tag", "middle"))
+            # dimension string from grid 3 to the sanitary branch and grid 4
+            dy = 244
+            g.append(f'<path d="M{ox+16},{dy} H{ox+196}" class="dim"/>')
+            for xx in (ox + 16, ox + 120, ox + 196):
+                g.append(f'<path d="M{xx-4},{dy+4} l8,-8 M{xx},{dy-10} V{dy+6}" class="dim"/>')
+            g.append(text(ox + 68, dy - 6, "4'-6\"", "lbl lbl-dim", "middle"))
+            g.append(text(ox + 158, dy - 6, "3'-2\"", "lbl lbl-dim", "middle"))
+        g.append(text(ox + 106, 290, "After" if tagged else "Before", "lbl lbl-panel", "middle"))
+        return "".join(g)
+
+    out.append(plan(14, False))
+    out.append('<path d="M240,20 V276" class="divider"/>')
+    out.append(plan(254, True))
+    return svg_wrap("Shop drawing view before and after tagging",
+                    "Two copies of the same plumbing plan view. The first has bare pipes; the second has size "
+                    "tags on the cold water, hot water and sanitary lines and a dimension string between grids 3 and 4.",
+                    "".join(out), "0 0 480 300")
+
+
+# ---------------------------------------------- tools: sleeves through slab
+
+def sleeves_svg():
+    out = []
+    defs = ('<defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" '
+            'patternTransform="rotate(45)"><path d="M0,0 V8" class="hatch-line"/></pattern></defs>')
+    out.append('<rect x="20" y="128" width="440" height="44" class="slab-cut"/>')
+    out.append('<rect x="20" y="128" width="440" height="44" fill="url(#hatch)"/>')
+    pipes = ((96, C["cw"], 3, '1" CW', 'Sleeve 2"'), (196, C["hw"], 3, '3/4" HW', 'Sleeve 1-1/2"'),
+             (316, C["san"], 4.2, '4" SAN', 'Sleeve 6"'))
+    for x, col, w, lab, slv in pipes:
+        out.append(f'<rect x="{x-11}" y="120" width="22" height="60" class="sleeve-sec"/>')
+        out.append(f'<path d="M{x},30 V270" stroke="{col}" stroke-width="{w}" class="pipe"/>')
+        out.append(f'<path d="M{x+11},124 l18,-22 h8" class="leader"/>')
+        out.append(text(x + 40, 106, slv, "lbl"))
+        out.append(text(x - 6, 258, lab, "lbl lbl-pipe", "end"))
+    out.append('<path d="M20,128 H460" class="level-line"/>')
+    out.append(text(24, 120, "Level 2", "lbl lbl-level"))
+    return svg_wrap("Sleeves placed where pipes cross a slab",
+                    "A section through a concrete slab with cold water, hot water and sanitary pipes passing through it, "
+                    "each inside a sleeve one size up, labelled with its size.",
+                    defs + "".join(out), "0 0 480 300")
+
+
+_svg_count = [0]
+
+
+def svg_wrap(title, desc, body, vb):
+    _svg_count[0] += 1
+    i = _svg_count[0]
+    return (f'<svg viewBox="{vb}" role="img" aria-labelledby="fig{i}-t fig{i}-d" xmlns="http://www.w3.org/2000/svg">'
+            f'<title id="fig{i}-t">{title}</title><desc id="fig{i}-d">{desc}</desc>{body}</svg>')
+
+
+# -------------------------------------------------------------------- page
+
+def figure(svg, view_name, note_comment):
+    return f"""
+        <figure class="view">
+          <!-- {note_comment} -->
+          <div class="view-frame">{svg}</div>
+          <figcaption><span class="view-name">{view_name}</span><span class="view-scale">Schematic, not to scale</span></figcaption>
+        </figure>"""
+
+
+def build(out_dir: Path):
+    tpl = (Path(__file__).parent / "template.html").read_text(encoding="utf-8")
+    html = (tpl
+            .replace("{{HERO_SVG}}", hero_svg())
+            .replace("{{FIG_REROUTE}}", figure(reroute_svg(), "Cold water rerouted under a beam",
+                                                "Replace with a Navisworks clash view or Revit 3D view (client info removed)"))
+            .replace("{{FIG_REUSE}}", figure(reuse_svg(), "Rainwater and greywater reuse",
+                                              "Replace with a riser or plan from a hospitality project (client info removed)"))
+            .replace("{{FIG_SHEET}}", figure(sheet_svg(), "Shop drawing under review",
+                                              "Replace with a reviewed shop drawing sheet (client info removed)"))
+            .replace("{{FIG_TAGS}}", figure(tags_svg(), "Plan view before and after the script",
+                                             "Replace with a GIF or short video of the tagging script running"))
+            .replace("{{FIG_SLEEVES}}", figure(sleeves_svg(), "Sleeves placed at a slab",
+                                                "Replace with a GIF or short video of the sleeve script running")))
+    assert "{{" not in html, "unfilled placeholder"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "index.html").write_text(html, encoding="utf-8")
+    print("wrote", out_dir / "index.html", len(html), "bytes")
+
+
+if __name__ == "__main__":
+    build(Path(sys.argv[1] if len(sys.argv) > 1 else "site"))

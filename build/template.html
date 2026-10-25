@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diego Rueda, plumbing and piping BIM specialist</title>
+<meta name="description" content="Plumbing and mechanical piping BIM specialist. Revit, Navisworks, Autodesk Fabrication, Dynamo and Python. Looking for BIM roles in Canada.">
+<link rel="canonical" href="https://dandrue.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dandrue.github.io/">
+<meta property="og:title" content="Diego Rueda, plumbing and piping BIM specialist">
+<meta property="og:description" content="Coordinated plumbing and piping models, shop drawings and Dynamo/Python tools. Looking for BIM roles in Canada.">
+<meta name="theme-color" content="#F6F8F9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2316222A'/%3E%3Cpath d='M9 25V13a4 4 0 0 1 4-4h10' fill='none' stroke='%234D8CF0' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/archivo-var.woff" as="font" type="font/woff" crossorigin>
+<style>
+  @font-face {
+    font-family: "Archivo";
+    src: url("assets/fonts/archivo-var.woff") format("woff");
+    font-weight: 100 900;
+    font-stretch: 62% 125%;
+    font-display: swap;
+  }
+  :root {
+    color-scheme: light;
+    --paper: #F6F8F9;
+    --sheet: #FFFFFF;
+    --ink: #16222A;
+    --ink-2: #4A5964;
+    --rule: #CBD5DB;
+    --slab: #E1E7EB;
+    --slab-side: #C9D3D9;
+    --slab-front: #D5DDE2;
+    --cw: #2361C4;
+    --hw: #C33E2E;
+    --san: #2F8540;
+    --vent: #A8741A;
+    --storm: #1C8A97;
+    --greywater: #77852A;
+    --reclaim: #7651B2;
+    --markup: #D2342B;
+    --wide: "wdth" 122;
+    --narrow: "wdth" 76;
+    --measure: 66ch;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--cw); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--cw); outline-offset: 3px; border-radius: 2px; }
+  .skip { position: absolute; left: -999px; top: 8px; background: var(--ink); color: #fff; padding: 8px 12px; z-index: 10; }
+  .skip:focus { left: 16px; }
+
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
+
+  /* header */
+  .top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 22px 0 0; }
+  .top .mark { font-weight: 700; font-variation-settings: var(--wide); font-size: 17px; color: var(--ink); text-decoration: none; letter-spacing: 0.01em; }
+  .top nav { display: flex; gap: 22px; flex-wrap: wrap; }
+  .top nav a { color: var(--ink-2); text-decoration: none; font-size: 15px; }
+  .top nav a:hover { color: var(--ink); text-decoration: underline; }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 40px; align-items: center; padding: 44px 0 28px; }
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(48px, 7.4vw, 92px);
+    line-height: 0.95;
+    font-weight: 800;
+    font-variation-settings: "wdth" 125;
+    letter-spacing: -0.015em;
+  }
+  .hero .role { margin: 18px 0 0; font-size: 22px; line-height: 1.3; font-weight: 600; font-variation-settings: "wdth" 108; }
+  .hero .lede { margin: 16px 0 0; max-width: 46ch; color: var(--ink-2); font-size: 18px; }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .btn { display: inline-block; padding: 11px 18px; border-radius: 3px; font-weight: 600; font-size: 16px; text-decoration: none; border: 1.5px solid var(--ink); }
+  .btn-primary { background: var(--ink); color: #fff; }
+  .btn-primary:hover { background: #24343F; text-decoration: none; }
+  .btn-ghost { color: var(--ink); background: transparent; }
+  .btn-ghost:hover { background: var(--sheet); text-decoration: none; }
+  .riser { width: 100%; height: auto; display: block; }
+
+  /* title block */
+  .titleblock { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1.4fr 1fr; border: 1.5px solid var(--ink); background: var(--sheet); margin: 8px 0 0; }
+  .titleblock div { padding: 12px 16px 14px; border-left: 1px solid var(--rule); }
+  .titleblock div:first-child { border-left: 0; }
+  .titleblock dt { font-size: 13px; color: var(--ink-2); font-variation-settings: var(--narrow); }
+  .titleblock dd { margin: 2px 0 0; font-weight: 600; font-size: 16px; line-height: 1.35; }
+
+  /* sections */
+  section { padding: 84px 0 0; }
+  h2 { margin: 0 0 14px; font-size: 34px; line-height: 1.1; font-weight: 750; font-variation-settings: "wdth" 118; letter-spacing: -0.01em; }
+  h3 { margin: 0; font-size: 22px; line-height: 1.25; font-weight: 650; font-variation-settings: "wdth" 108; }
+  .intro { max-width: var(--measure); color: var(--ink-2); margin: 0 0 36px; }
+  p { margin: 0; }
+
+  /* drawing views */
+  .view { margin: 0; }
+  .view-frame { background: var(--sheet); border: 1px solid var(--rule); padding: 10px; }
+  .view-frame svg { display: block; width: 100%; height: auto; }
+  .view figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 10px; padding-top: 6px; border-top: 2.5px solid var(--ink); max-width: 100%; }
+  .view-name { font-weight: 650; font-size: 15px; }
+  .view-scale { font-size: 13px; color: var(--ink-2); font-variation-settings: var(--narrow); }
+
+  .work { display: grid; gap: 64px; }
+  .work article { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 44px; align-items: start; }
+  .work .meta { margin-top: 6px; color: var(--ink-2); font-size: 15px; }
+  .work .body { margin-top: 14px; max-width: var(--measure); }
+  .tools-used { margin-top: 14px; font-size: 15px; color: var(--ink-2); }
+  .tools-used strong { color: var(--ink); font-weight: 600; }
+
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; }
+  .tools article h3 { margin-top: 20px; }
+  .tools article p { margin-top: 10px; max-width: var(--measure); }
+
+  /* experience */
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2.5px solid var(--ink); max-width: 860px; }
+  .timeline li { display: grid; grid-template-columns: 190px 1fr; gap: 24px; padding: 0 0 26px 24px; position: relative; }
+  .timeline li::before { content: ""; position: absolute; left: -7px; top: 8px; width: 11px; height: 11px; border-radius: 50%; background: var(--paper); border: 2.5px solid var(--ink); }
+  .timeline li.now::before { background: var(--cw); border-color: var(--cw); }
+  .timeline .when { color: var(--ink-2); font-size: 15px; padding-top: 2px; }
+  .timeline .what strong { font-weight: 650; font-size: 18px; }
+  .timeline .what span { display: block; color: var(--ink-2); font-size: 15px; }
+  .timeline .what p { margin-top: 4px; }
+
+  /* skills */
+  .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin: 0; }
+  .skills dt { font-weight: 650; padding-bottom: 8px; border-bottom: 2.5px solid var(--ink); margin-bottom: 10px; }
+  .skills dd { margin: 0 0 4px; color: var(--ink-2); }
+  .key-item { white-space: nowrap; }
+  .swatch { display: inline-block; width: 18px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 8px; }
+
+  .edu { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; }
+  .edu h3 { font-size: 19px; }
+  .edu p, .edu ul { margin-top: 8px; color: var(--ink-2); }
+  .edu ul { padding-left: 20px; }
+  .edu li { margin-bottom: 2px; }
+
+  .contact { padding-bottom: 96px; }
+  .contact p { max-width: 58ch; font-size: 19px; }
+  .contact .links { margin-top: 18px; color: var(--ink-2); font-size: 15px; }
+  .contact .links a { margin-right: 18px; }
+  footer { border-top: 1px solid var(--rule); padding: 22px 0 40px; color: var(--ink-2); font-size: 14px; }
+
+  /* svg drawing styles */
+  svg text { font-family: "Archivo", system-ui, sans-serif; }
+  .pipe { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .lbl { font-size: 12.5px; fill: var(--ink-2); font-variation-settings: var(--narrow); font-weight: 500; }
+  .lbl-pipe { fill: var(--ink); font-weight: 650; }
+  .lbl-level { font-weight: 650; fill: var(--ink); }
+  .lbl-node { fill: var(--ink); font-weight: 600; font-size: 13px; }
+  .lbl-tb { fill: var(--ink); font-size: 11.5px; }
+  .lbl-sheetno { fill: var(--ink); font-size: 20px; font-weight: 800; font-variation-settings: "wdth" 110; }
+  .lbl-bubble { fill: var(--ink); font-weight: 700; font-size: 12px; }
+  .lbl-tag { fill: var(--ink); font-size: 11.5px; font-weight: 650; }
+  .lbl-dim { fill: var(--ink); font-size: 11.5px; }
+  .lbl-panel { fill: var(--ink); font-weight: 650; font-size: 13px; }
+  .lbl-delta { fill: var(--markup); font-size: 10px; font-weight: 700; }
+  .key { font-weight: 650; }
+  .riser .lbl { font-size: 14px; }
+  .leader { fill: none; stroke: var(--ink-2); stroke-width: 1; }
+  .level-line { fill: none; stroke: var(--ink); stroke-width: 1; stroke-dasharray: 10 3 2 3; }
+  .slab-top { fill: var(--slab); stroke: #9AA9B2; stroke-width: 1; fill-opacity: 0.92; }
+  .slab-side { fill: var(--slab-side); stroke: #9AA9B2; stroke-width: 1; }
+  .slab-front { fill: var(--slab-front); stroke: #9AA9B2; stroke-width: 1; }
+  .sleeve { stroke: #8494A0; stroke-width: 10; stroke-linecap: butt; fill: none; }
+  .fixture { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.4; }
+  .beam-top { fill: #BAC6CE; stroke: #7D8D98; stroke-width: 1; }
+  .beam-side { fill: #A3B0B9; stroke: #7D8D98; stroke-width: 1; }
+  .beam-front { fill: #AFBCC5; stroke: #7D8D98; stroke-width: 1; }
+  .ghost { fill: none; stroke: var(--cw); stroke-width: 2; stroke-dasharray: 6 5; opacity: 0.45; }
+  .clash circle { fill: var(--sheet); stroke: var(--markup); stroke-width: 2; }
+  .clash path { stroke: var(--markup); stroke-width: 2; fill: none; stroke-linecap: round; }
+  .node { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.4; }
+  .node-treat { fill: var(--paper); }
+  .arrow { fill: var(--ink); }
+  .sheet-border { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.6; }
+  .sheet-tb { fill: var(--paper); stroke: var(--ink); stroke-width: 1.2; }
+  .sheet-rule { stroke: var(--ink); stroke-width: 0.8; }
+  .wall { fill: none; stroke: #8E9CA6; stroke-width: 5; stroke-linecap: square; }
+  .cloud { fill: none; stroke: var(--markup); stroke-width: 1.6; }
+  .delta { fill: var(--sheet); stroke: var(--markup); stroke-width: 1.5; }
+  .grid { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 12 3 3 3; fill: none; }
+  .bubble { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.2; }
+  .tag { fill: var(--sheet); stroke: var(--ink); stroke-width: 1; }
+  .dim { stroke: var(--ink); stroke-width: 1; fill: none; }
+  .divider { stroke: var(--rule); stroke-width: 1; }
+  .slab-cut { fill: var(--slab); stroke: var(--ink); stroke-width: 1.4; }
+  .hatch-line { stroke: #9AA9B2; stroke-width: 1; }
+  .sleeve-sec { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.4; }
+
+  /* the one moment of motion: the riser draws itself on load */
+  .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 0.9s cubic-bezier(.4,.1,.3,1) forwards; animation-delay: var(--d, 0s); }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .draw { animation: none; stroke-dashoffset: 0; stroke-dasharray: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 12px; padding-top: 32px; }
+    .titleblock { grid-template-columns: 1fr 1fr; }
+    .titleblock div { border-left: 0; border-top: 1px solid var(--rule); }
+    .titleblock div:nth-child(-n+2) { border-top: 0; }
+    .titleblock div:nth-child(even) { border-left: 1px solid var(--rule); }
+    .titleblock div:last-child { grid-column: 1 / -1; border-left: 0; }
+    .work article, .tools, .edu { grid-template-columns: 1fr; gap: 24px; }
+    .work { gap: 56px; }
+    .skills { grid-template-columns: 1fr 1fr; }
+    section { padding-top: 64px; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 16px; }
+    .top nav { gap: 16px; }
+    .timeline li { grid-template-columns: 1fr; gap: 2px; }
+    .skills { grid-template-columns: 1fr; }
+    h2 { font-size: 28px; }
+    .hero .role { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#main">Diego Rueda</a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#tools">Tools</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <div class="hero">
+      <div>
+        <h1>Diego Rueda</h1>
+        <p class="role">Plumbing and mechanical piping BIM specialist</p>
+        <p class="lede">I model plumbing and piping in Revit that contractors can install from, coordinate it in Navisworks, and write Dynamo and Python tools for the repetitive parts. I'm now looking for my next role in Canada.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="mailto:d.ruedaq@gmail.com">Email me</a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/diegoarueda/">LinkedIn profile</a>
+        </div>
+      </div>
+      {{HERO_SVG}}
+    </div>
+
+    <dl class="titleblock" aria-label="At a glance">
+      <div><dt>Current role</dt><dd>Job Captain (OJT), ENG</dd></div>
+      <div><dt>Based in</dt><dd>Medellín, Colombia</dd></div>
+      <div><dt>Looking for</dt><dd>BIM roles in Canada</dd></div>
+      <div><dt>Main tools</dt><dd>Revit, Navisworks, Fabrication Parts, Dynamo, Python</dd></div>
+      <div><dt>Languages</dt><dd>Spanish, English, basic French</dd></div>
+    </dl>
+
+    <section id="work" aria-labelledby="work-h">
+      <h2 id="work-h">Selected work</h2>
+      <p class="intro">Client models stay confidential, so the drawings here are schematics I made to show the kind of problem each role involved.</p>
+      <div class="work">
+        <article>
+          {{FIG_REROUTE}}
+          <div>
+            <h3>Coordinated plumbing and piping for U.S. commercial projects</h3>
+            <p class="meta">ENG, 2026</p>
+            <p class="body">I model plumbing and mechanical piping in Revit with native families and Autodesk Fabrication Parts, then run clash detection in Navisworks against the architectural, structural, HVAC, electrical and fire protection models. Each week I take the open clashes to the coordination meeting with the U.S. engineering team, and to constructability meetings with the general contractor and trades.</p>
+            <p class="tools-used"><strong>Tools:</strong> Revit MEP, Autodesk Fabrication Parts, Navisworks, ACC</p>
+          </div>
+        </article>
+        <article>
+          {{FIG_REUSE}}
+          <div>
+            <h3>Plumbing design for luxury hotels and resorts</h3>
+            <p class="meta">Utopia Design, 2025 to 2026</p>
+            <p class="body">I designed domestic water, sanitary, storm, rainwater harvesting and greywater systems for hospitality projects in several countries, including spas, pools and guest suites. Every country had its own plumbing code, so each design had to be checked against local rules before it went out.</p>
+            <p class="tools-used"><strong>Tools:</strong> Revit MEP, Navisworks, AutoCAD, ACC</p>
+          </div>
+        </article>
+        <article>
+          {{FIG_SHEET}}
+          <div>
+            <h3>Plumbing shop drawings, then leading the team</h3>
+            <p class="meta">M&amp;S Mechanical, 2023 to 2025</p>
+            <p class="body">I started by modelling plumbing for U.S. commercial and residential buildings and producing shop drawings for fabrication and installation. From January 2025 I led the plumbing drafting team: reviewing models and shop drawings before they went to the client, and helping newer drafters with Revit and coordination.</p>
+            <p class="tools-used"><strong>Tools:</strong> Revit MEP, Navisworks, AutoCAD, CADmep, Bluebeam</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="tools" aria-labelledby="tools-h">
+      <h2 id="tools-h">Tools I build</h2>
+      <p class="intro">A lot of time in a plumbing model goes into steps a script can do. These are two of mine, built with Dynamo and Python. I also build small Revit and Navisworks add-ins.</p>
+      <div class="tools">
+        <article>
+          {{FIG_TAGS}}
+          <h3>Tags and dimensions for shop drawings</h3>
+          <!-- Add the time it saves, e.g. "Cuts a sheet set from X hours to Y minutes." -->
+          <p>Adds size tags and dimension strings to the pipes in shop drawing views, instead of clicking through every pipe by hand on each sheet.</p>
+        </article>
+        <article>
+          {{FIG_SLEEVES}}
+          <h3>Sleeves where pipes cross slabs</h3>
+          <!-- Add the time it saves or how many sleeves it placed on a real project. -->
+          <p>Finds every place a pipe passes through a slab and places a sleeve there, so the sleeve layout doesn't depend on someone spotting each penetration.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience" aria-labelledby="exp-h">
+      <h2 id="exp-h">Experience</h2>
+      <ol class="timeline" reversed>
+        <li class="now">
+          <span class="when">Oct 2026 – now</span>
+          <div class="what"><strong>Job Captain (OJT)</strong><span>ENG, remote</span><p>Promoted three months after joining. Learning to take plumbing and piping drawing sets from the coordinated model all the way to issue.</p></div>
+        </li>
+        <li>
+          <span class="when">Jul 2026 – Oct 2026</span>
+          <div class="what"><strong>BIM Specialist, plumbing and mechanical piping</strong><span>ENG, remote</span><p>Revit models with Fabrication Parts, Navisworks coordination with a U.S. engineering team.</p></div>
+        </li>
+        <li>
+          <span class="when">Apr 2025 – Jun 2026</span>
+          <div class="what"><strong>Plumbing Designer (BIM)</strong><span>Utopia Design, remote; part-time until Sep 2025, then full-time</span><p>Plumbing for luxury hotels and resorts in several countries.</p></div>
+        </li>
+        <li>
+          <span class="when">Jan 2025 – Sep 2025</span>
+          <div class="what"><strong>Plumbing Drafting Lead</strong><span>M&amp;S Mechanical</span><p>Led the plumbing drafting team on U.S. projects.</p></div>
+        </li>
+        <li>
+          <span class="when">Sep 2023 – Dec 2024</span>
+          <div class="what"><strong>MEP Designer</strong><span>M&amp;S Mechanical, Medellín</span><p>Plumbing models and shop drawings for U.S. commercial and residential projects.</p></div>
+        </li>
+        <li>
+          <span class="when">Jun 2023 – Dec 2024</span>
+          <div class="what"><strong>CAD Drafter I</strong><span>Infinigy Solutions, freelance</span><p>Permit-ready AutoCAD drawings for telecom sites in California.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-h">
+      <h2 id="skills-h">What I work with</h2>
+      <p class="intro">The colours on this page follow the usual plumbing system colours: <span class="key-item"><span class="swatch" style="background:var(--cw)"></span>cold water</span>, <span class="key-item"><span class="swatch" style="background:var(--hw)"></span>hot water</span>, <span class="key-item"><span class="swatch" style="background:var(--san)"></span>sanitary</span> and <span class="key-item"><span class="swatch" style="background:var(--vent)"></span>vent</span>.</p>
+      <dl class="skills">
+        <div><dt>Modelling</dt><dd>Revit MEP</dd><dd>Autodesk Fabrication Parts (CADmep)</dd><dd>AutoCAD</dd></div>
+        <div><dt>Coordination</dt><dd>Navisworks clash detection</dd><dd>Autodesk Construction Cloud</dd><dd>Bluebeam</dd><dd>Procore</dd></div>
+        <div><dt>Automation</dt><dd>Dynamo</dd><dd>Python</dd><dd>Revit and Navisworks add-ins</dd></div>
+        <div><dt>Plumbing design</dt><dd>Domestic water</dd><dd>Sanitary and vent</dd><dd>Storm drainage</dd><dd>Rainwater and greywater reuse</dd></div>
+      </dl>
+    </section>
+
+    <section id="education" aria-labelledby="edu-h">
+      <h2 id="edu-h">Education and training</h2>
+      <div class="edu">
+        <div>
+          <h3>Bachelor's degree, mechanical engineering</h3>
+          <p>Universidad Industrial de Santander, 2013 – 2020</p>
+          <h3 style="margin-top:28px">IELTS General Training</h3>
+          <p>British Council, 2026</p>
+        </div>
+        <div>
+          <h3>American Society of Plumbing Engineers courses, 2025</h3>
+          <ul>
+            <li>Design of domestic water systems, part 2</li>
+            <li>Design of domestic hot water systems, part 1</li>
+            <li>Pipe hangers and supports</li>
+            <li>Piping insulation</li>
+            <li>Intro to heat pump water heaters</li>
+            <li>Automated technology for building water management</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h">Get in touch</h2>
+      <p>I'm looking for a BIM Coordinator, BIM Specialist or plumbing BIM designer role in Canada, ideally in Calgary, Edmonton, Toronto, Vancouver or Ottawa. On-site, hybrid and remote all work for me.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:d.ruedaq@gmail.com">Email d.ruedaq@gmail.com</a>
+      </div>
+      <p class="links"><a href="https://www.linkedin.com/in/diegoarueda/">LinkedIn</a><a href="https://github.com/dandrue">GitHub</a></p>
+    </section>
+  </main>
+
+  <footer>Diego Rueda, 2026. The drawings on this site are schematics; no client data is shown.</footer>
+</div>
+</body>
+</html>
