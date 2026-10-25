@@ -1,0 +1,31 @@
+{
+  "_note": "Single source for piping service colours. gen.py turns this into CSS tokens, the colour key on the page and assets/js/services.js. Supply/return pairs: the return is the lighter shade of its supply.",
+  "groups": [
+    {
+      "name": "Plumbing",
+      "services": [
+        {"id": "san", "abbr": "SAN", "name": "Sanitary", "color": "#2F8540", "insulated": false},
+        {"id": "vent", "abbr": "V", "name": "Vent", "color": "#A8741A", "insulated": false},
+        {"id": "sd", "abbr": "SD", "name": "Storm drain", "color": "#6B3FB3", "insulated": false},
+        {"id": "sod", "abbr": "SOD", "name": "Storm overflow drain", "color": "#A88CDC", "insulated": false},
+        {"id": "grease", "abbr": "GW", "name": "Sanitary grease", "color": "#6E4B2E", "insulated": false},
+        {"id": "cd", "abbr": "CD", "name": "Condensate from HVAC", "color": "#86AC2E", "insulated": false},
+        {"id": "cw", "abbr": "CW", "name": "Cold water", "color": "#2361C4", "insulated": true},
+        {"id": "chw", "abbr": "CHW", "name": "Chilled water", "color": "#2E9FD8", "insulated": true},
+        {"id": "hw", "abbr": "HW", "name": "Hot water", "color": "#C33E2E", "insulated": true},
+        {"id": "hwr", "abbr": "HWR", "name": "Hot water return", "color": "#D9577E", "insulated": true}
+      ]
+    },
+    {
+      "name": "Mechanical piping",
+      "services": [
+        {"id": "hhws", "abbr": "HHWS", "name": "Heating water supply", "color": "#D9661F", "insulated": true},
+        {"id": "hhwr", "abbr": "HHWR", "name": "Heating water return", "color": "#EFA35E", "insulated": true},
+        {"id": "chws", "abbr": "CHWS", "name": "Chilled water supply", "color": "#12808E", "insulated": true},
+        {"id": "chwr", "abbr": "CHWR", "name": "Chilled water return", "color": "#5DBAC4", "insulated": true},
+        {"id": "rl", "abbr": "RL", "name": "Refrigerant liquid", "color": "#B33A9E", "insulated": false},
+        {"id": "rs", "abbr": "RS", "name": "Refrigerant suction", "color": "#DE93D0", "insulated": true}
+      ]
+    }
+  ]
+}

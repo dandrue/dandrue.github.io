@@ -31,13 +31,25 @@
     --slab: #E1E7EB;
     --slab-side: #C9D3D9;
     --slab-front: #D5DDE2;
-    --cw: #2361C4;
-    --hw: #C33E2E;
+    /* piping services, generated from build/services.json */
     --san: #2F8540;
     --vent: #A8741A;
-    --storm: #1C8A97;
+    --sd: #6B3FB3;
+    --sod: #A88CDC;
+    --grease: #6E4B2E;
+    --cd: #86AC2E;
+    --cw: #2361C4;
+    --chw: #2E9FD8;
+    --hw: #C33E2E;
+    --hwr: #D9577E;
+    --hhws: #D9661F;
+    --hhwr: #EFA35E;
+    --chws: #12808E;
+    --chwr: #5DBAC4;
+    --rl: #B33A9E;
+    --rs: #DE93D0;
     --greywater: #77852A;
-    --reclaim: #7651B2;
+    --reclaim: #0E8A7B;
     --markup: #D2342B;
     --wide: "wdth" 122;
     --narrow: "wdth" 76;
@@ -137,8 +149,19 @@
   .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin: 0; }
   .skills dt { font-weight: 650; padding-bottom: 8px; border-bottom: 2.5px solid var(--ink); margin-bottom: 10px; }
   .skills dd { margin: 0 0 4px; color: var(--ink-2); }
-  .key-item { white-space: nowrap; }
-  .swatch { display: inline-block; width: 18px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 8px; }
+  #skills .skills { margin-top: 28px; }
+
+  /* piping service colour key */
+  .key-h { margin-top: 56px; font-size: 19px; }
+  .key-note { margin-top: 6px; max-width: var(--measure); color: var(--ink-2); }
+  .svc-key { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; margin-top: 22px; }
+  .svc-key h4 { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 2.5px solid var(--ink); font-size: 17px; font-weight: 650; }
+  .svc-key ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
+  .svc-key li { display: flex; align-items: center; gap: 10px; min-width: 0; line-height: 1.3; }
+  .svc-swatch { flex: none; width: 30px; height: 6px; border-radius: 3px; margin: 0 4px; background: var(--c); }
+  .svc-swatch.is-insulated { box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 20%, transparent); }
+  .svc-abbr { flex: none; width: 3.1em; font-weight: 700; font-size: 14px; font-variation-settings: var(--narrow); letter-spacing: 0.02em; }
+  .svc-name { color: var(--ink-2); font-size: 15px; }
 
   .edu { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; }
   .edu h3 { font-size: 19px; }
@@ -231,6 +254,7 @@
     .work article, .tools, .edu { grid-template-columns: 1fr; gap: 24px; }
     .work { gap: 56px; }
     .skills { grid-template-columns: 1fr 1fr; }
+    .svc-key { grid-template-columns: 1fr; gap: 28px; }
     section { padding-top: 64px; }
   }
   @media (max-width: 560px) {
@@ -238,6 +262,7 @@
     .top nav { gap: 16px; }
     .timeline li { grid-template-columns: 1fr; gap: 2px; }
     .skills { grid-template-columns: 1fr; }
+    .svc-key ul { grid-template-columns: 1fr; }
     h2 { font-size: 28px; }
     .hero .role { font-size: 20px; }
   }
@@ -268,20 +293,20 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-art" id="hero-art"><svg class="riser" viewBox="0 0 560 520" role="img" aria-labelledby="riser-t riser-d" xmlns="http://www.w3.org/2000/svg"><title id="riser-t">Isometric plumbing riser diagram</title><desc id="riser-d">Cold water, hot water, sanitary and vent risers rising through two floor slabs, with sleeves where each pipe crosses a slab and branches to a fixture on level 2.</desc><path d="M275.5,385.8 L275.5,350.4" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0s"/>
-<path d="M293.5,396.2 L293.5,360.8" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.15s"/>
+        <div class="hero-art" id="hero-art"><svg class="riser" viewBox="0 0 560 520" role="img" aria-labelledby="riser-t riser-d" xmlns="http://www.w3.org/2000/svg"><title id="riser-t">Isometric plumbing riser diagram</title><desc id="riser-d">Cold water, hot water, sanitary and vent risers rising through two floor slabs, with sleeves where each pipe crosses a slab and branches to a fixture on level 2.</desc><path d="M275.5,385.8 L275.5,350.4" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0s"/><path d="M275.5,385.8 L275.5,350.4" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0s"/>
+<path d="M293.5,396.2 L293.5,360.8" stroke="var(--hw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.15s"/><path d="M293.5,396.2 L293.5,360.8" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.15s"/>
 <path d="M347.6,427.4 L347.6,392.0" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.3s"/>
 <polygon class="slab-top" points="262.0,300.0 451.1,409.2 316.0,487.2 126.9,378.0" /><polygon class="slab-front" points="126.9,378.0 316.0,487.2 316.0,498.6 126.9,389.4" /><polygon class="slab-side" points="451.1,409.2 316.0,487.2 316.0,498.6 451.1,420.6" />
 <path d="M275.5,353.6 L275.5,331.7" class="sleeve"/>
 <path d="M293.5,364.0 L293.5,342.1" class="sleeve"/>
 <path d="M347.6,395.2 L347.6,373.3" class="sleeve"/>
-<path d="M275.5,350.4 L275.5,194.4" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.35s"/>
-<path d="M293.5,360.8 L293.5,204.8" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.5s"/>
+<path d="M275.5,350.4 L275.5,194.4" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.35s"/><path d="M275.5,350.4 L275.5,194.4" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.35s"/>
+<path d="M293.5,360.8 L293.5,204.8" stroke="var(--hw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.5s"/><path d="M293.5,360.8 L293.5,204.8" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.5s"/>
 <path d="M347.6,392.0 L347.6,236.0" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.6499999999999999s"/>
 <path d="M370.1,320.8 L370.1,249.0" stroke="var(--vent)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.7999999999999999s"/>
 <path d="M347.6,333.8 L370.1,320.8" stroke="var(--vent)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.95s"/>
-<path d="M275.5,297.4 L217.0,331.2 L253.0,352.0" stroke="var(--cw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:0.9s"/>
-<path d="M293.5,318.2 L248.5,344.2 L266.5,354.6" stroke="var(--hw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.0s"/>
+<path d="M275.5,297.4 L217.0,331.2 L253.0,352.0" stroke="var(--cw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.9s"/><path d="M275.5,297.4 L217.0,331.2 L253.0,352.0" stroke="var(--cw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:0.9s"/>
+<path d="M293.5,318.2 L248.5,344.2 L266.5,354.6" stroke="var(--hw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.0s"/><path d="M293.5,318.2 L248.5,344.2 L266.5,354.6" stroke="var(--hw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.0s"/>
 <path d="M347.6,248.0 L266.5,294.8 L266.5,282.8" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.1s"/>
 <polygon class="slab-top" points="262.0,144.0 451.1,253.2 316.0,331.2 126.9,222.0" /><polygon class="slab-front" points="126.9,222.0 316.0,331.2 316.0,342.6 126.9,233.4" /><polygon class="slab-side" points="451.1,253.2 316.0,331.2 316.0,342.6 451.1,264.6" />
 <path d="M275.5,197.6 L275.5,175.7" class="sleeve"/>
@@ -289,13 +314,13 @@
 <path d="M347.6,239.2 L347.6,217.3" class="sleeve"/>
 <path d="M370.1,252.2 L370.1,230.3" class="sleeve"/>
 <path d="M266.5,286.0 L266.5,264.1" class="sleeve"/>
-<path d="M275.5,194.4 L275.5,47.8" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.8s"/>
-<path d="M293.5,204.8 L293.5,79.0" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.9500000000000001s"/>
+<path d="M275.5,194.4 L275.5,47.8" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.8s"/><path d="M275.5,194.4 L275.5,47.8" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.8s"/>
+<path d="M293.5,204.8 L293.5,79.0" stroke="var(--hw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.9500000000000001s"/><path d="M293.5,204.8 L293.5,79.0" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.9500000000000001s"/>
 <path d="M347.6,236.0 L347.6,141.4" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.1s"/>
 <path d="M370.1,249.0 L370.1,81.6" stroke="var(--vent)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.25s"/>
 <path d="M266.5,282.8 L266.5,253.2" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.3s"/>
-<path d="M275.5,136.2 L194.5,183.0 L248.5,214.2 L248.5,235.0" stroke="var(--cw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.4s"/>
-<path d="M293.5,159.6 L226.0,198.6 L262.0,219.4 L262.0,232.4" stroke="var(--hw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.5s"/>
+<path d="M275.5,136.2 L194.5,183.0 L248.5,214.2 L248.5,235.0" stroke="var(--cw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.4s"/><path d="M275.5,136.2 L194.5,183.0 L248.5,214.2 L248.5,235.0" stroke="var(--cw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.4s"/>
+<path d="M293.5,159.6 L226.0,198.6 L262.0,219.4 L262.0,232.4" stroke="var(--hw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.5s"/><path d="M293.5,159.6 L226.0,198.6 L262.0,219.4 L262.0,232.4" stroke="var(--hw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.5s"/>
 <ellipse cx="260.6" cy="243.1" rx="17" ry="9" class="fixture"/>
 <path d="M275.5,47.8 l10,-8 h6" class="leader"/>
 <text x="294.5" y="43.8" class="lbl lbl-pipe" text-anchor="start" >2" CW</text>
@@ -331,7 +356,7 @@
           
         <figure class="view">
           <!-- Replace with a Navisworks clash view or Revit 3D view (client info removed) -->
-          <div class="view-frame"><svg viewBox="0 0 480 300" role="img" aria-labelledby="fig1-t fig1-d" xmlns="http://www.w3.org/2000/svg"><title id="fig1-t">Rerouting a cold water line under a beam</title><desc id="fig1-d">A cold water pipe drops on 45 degree offsets to pass under a steel beam; the original straight route through the beam is shown dashed with a clash marker.</desc><path d="M80.7,99.0 L170.8,151.0 L205.4,211.0 L233.1,227.0 L267.8,207.0 L357.8,259.0" stroke="var(--cw)" stroke-width="4" class="pipe"/><polygon class="beam-top" points="319.7,85.0 340.5,97.0 132.7,217.0 111.9,205.0" /><polygon class="beam-front" points="111.9,205.0 132.7,217.0 132.7,261.0 111.9,249.0" /><polygon class="beam-side" points="340.5,97.0 132.7,217.0 132.7,261.0 340.5,141.0" /><path d="M80.7,99.0 L357.8,259.0" class="ghost"/><g class="clash"><circle cx="219.3" cy="179.0" r="9"/><path d="M215.3,175.0 l8,8 M223.3,175.0 l-8,8"/></g><path d="M108.4,115.0 l-6,-26 h-10" class="leader"/><text x="90.4" y="85.0" class="lbl lbl-pipe" text-anchor="end" >2" CW</text><path d="M330.1,91.0 l14,-22 h10" class="leader"/><text x="357.1" y="73.0" class="lbl" text-anchor="start" >Beam</text><path d="M228.3,174.0 l30,-30 h12" class="leader"/><text x="273.3" y="148.0" class="lbl" text-anchor="start" >Clash on the original route</text></svg></div>
+          <div class="view-frame"><svg viewBox="0 0 480 300" role="img" aria-labelledby="fig1-t fig1-d" xmlns="http://www.w3.org/2000/svg"><title id="fig1-t">Rerouting a cold water line under a beam</title><desc id="fig1-d">A cold water pipe drops on 45 degree offsets to pass under a steel beam; the original straight route through the beam is shown dashed with a clash marker.</desc><path d="M80.7,99.0 L170.8,151.0 L205.4,211.0 L233.1,227.0 L267.8,207.0 L357.8,259.0" stroke="var(--cw)" stroke-width="11.2" stroke-opacity="0.2" class="pipe"/><path d="M80.7,99.0 L170.8,151.0 L205.4,211.0 L233.1,227.0 L267.8,207.0 L357.8,259.0" stroke="var(--cw)" stroke-width="4" class="pipe"/><polygon class="beam-top" points="319.7,85.0 340.5,97.0 132.7,217.0 111.9,205.0" /><polygon class="beam-front" points="111.9,205.0 132.7,217.0 132.7,261.0 111.9,249.0" /><polygon class="beam-side" points="340.5,97.0 132.7,217.0 132.7,261.0 340.5,141.0" /><path d="M80.7,99.0 L357.8,259.0" class="ghost"/><g class="clash"><circle cx="219.3" cy="179.0" r="9"/><path d="M215.3,175.0 l8,8 M223.3,175.0 l-8,8"/></g><path d="M108.4,115.0 l-6,-26 h-10" class="leader"/><text x="90.4" y="85.0" class="lbl lbl-pipe" text-anchor="end" >2" CW</text><path d="M330.1,91.0 l14,-22 h10" class="leader"/><text x="357.1" y="73.0" class="lbl" text-anchor="start" >Beam</text><path d="M228.3,174.0 l30,-30 h12" class="leader"/><text x="273.3" y="148.0" class="lbl" text-anchor="start" >Clash on the original route</text></svg></div>
           <figcaption><span class="view-name">Cold water rerouted under a beam</span><span class="view-scale">Schematic, not to scale</span></figcaption>
         </figure>
           <div>
@@ -345,7 +370,7 @@
           
         <figure class="view">
           <!-- Replace with a riser or plan from a hospitality project (client info removed) -->
-          <div class="view-frame"><svg viewBox="0 0 480 300" role="img" aria-labelledby="fig2-t fig2-d" xmlns="http://www.w3.org/2000/svg"><title id="fig2-t">Rainwater and greywater reuse</title><desc id="fig2-d">Roof drains feed a rainwater tank and showers and basins feed a greywater tank; both pass through filtration and UV treatment and supply toilets and irrigation with non-potable water.</desc><defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="arrow"/></marker></defs><rect x="16" y="40" width="118" height="38" rx="2" class="node"/><text x="75.0" y="64.0" class="lbl lbl-node" text-anchor="middle" >Roof drains</text><rect x="16" y="214" width="118" height="38" rx="2" class="node"/><text x="75.0" y="238.0" class="lbl lbl-node" text-anchor="middle" >Showers, basins</text><rect x="178" y="40" width="118" height="38" rx="2" class="node"/><text x="237.0" y="64.0" class="lbl lbl-node" text-anchor="middle" >Rainwater tank</text><rect x="178" y="214" width="118" height="38" rx="2" class="node"/><text x="237.0" y="238.0" class="lbl lbl-node" text-anchor="middle" >Greywater tank</text><rect x="178" y="127" width="118" height="38" rx="2" class="node node-treat"/><text x="237.0" y="151.0" class="lbl lbl-node" text-anchor="middle" >Filter and UV</text><rect x="340" y="127" width="124" height="38" rx="2" class="node"/><text x="402.0" y="151.0" class="lbl lbl-node" text-anchor="middle" >Toilets, irrigation</text><path d="M134,59 L172,59" stroke="var(--storm)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M134,233 L172,233" stroke="var(--greywater)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M237,78 L237,121" stroke="var(--storm)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M237,214 L237,171" stroke="var(--greywater)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M296,146 L334,146" stroke="var(--reclaim)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><text x="16.0" y="290.0" class="lbl key" text-anchor="start" fill="var(--storm)">Rainwater</text><text x="96.0" y="290.0" class="lbl key" text-anchor="start" fill="var(--greywater)">Greywater</text><text x="178.0" y="290.0" class="lbl key" text-anchor="start" fill="var(--reclaim)">Reclaimed supply (non-potable)</text></svg></div>
+          <div class="view-frame"><svg viewBox="0 0 480 300" role="img" aria-labelledby="fig2-t fig2-d" xmlns="http://www.w3.org/2000/svg"><title id="fig2-t">Rainwater and greywater reuse</title><desc id="fig2-d">Roof drains feed a rainwater tank and showers and basins feed a greywater tank; both pass through filtration and UV treatment and supply toilets and irrigation with non-potable water.</desc><defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" class="arrow"/></marker></defs><rect x="16" y="40" width="118" height="38" rx="2" class="node"/><text x="75.0" y="64.0" class="lbl lbl-node" text-anchor="middle" >Roof drains</text><rect x="16" y="214" width="118" height="38" rx="2" class="node"/><text x="75.0" y="238.0" class="lbl lbl-node" text-anchor="middle" >Showers, basins</text><rect x="178" y="40" width="118" height="38" rx="2" class="node"/><text x="237.0" y="64.0" class="lbl lbl-node" text-anchor="middle" >Rainwater tank</text><rect x="178" y="214" width="118" height="38" rx="2" class="node"/><text x="237.0" y="238.0" class="lbl lbl-node" text-anchor="middle" >Greywater tank</text><rect x="178" y="127" width="118" height="38" rx="2" class="node node-treat"/><text x="237.0" y="151.0" class="lbl lbl-node" text-anchor="middle" >Filter and UV</text><rect x="340" y="127" width="124" height="38" rx="2" class="node"/><text x="402.0" y="151.0" class="lbl lbl-node" text-anchor="middle" >Toilets, irrigation</text><path d="M134,59 L172,59" stroke="var(--sd)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M134,233 L172,233" stroke="var(--greywater)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M237,78 L237,121" stroke="var(--sd)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M237,214 L237,171" stroke="var(--greywater)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M296,146 L334,146" stroke="var(--reclaim)" stroke-width="3.4" class="pipe" marker-end="url(#arr)"/><path d="M16,286 h16" stroke="var(--sd)" stroke-width="3.4" class="pipe"/><text x="38.0" y="290.0" class="lbl key" text-anchor="start" >Rainwater (storm drain)</text><path d="M176,286 h16" stroke="var(--greywater)" stroke-width="3.4" class="pipe"/><text x="198.0" y="290.0" class="lbl key" text-anchor="start" >Greywater</text><path d="M272,286 h16" stroke="var(--reclaim)" stroke-width="3.4" class="pipe"/><text x="294.0" y="290.0" class="lbl key" text-anchor="start" >Reclaimed (non-potable)</text></svg></div>
           <figcaption><span class="view-name">Rainwater and greywater reuse</span><span class="view-scale">Schematic, not to scale</span></figcaption>
         </figure>
           <div>
@@ -433,13 +458,15 @@
 
     <section id="skills" aria-labelledby="skills-h">
       <h2 id="skills-h">What I work with</h2>
-      <p class="intro">The colours on this page follow the usual plumbing system colours: <span class="key-item"><span class="swatch" style="background:var(--cw)"></span>cold water</span>, <span class="key-item"><span class="swatch" style="background:var(--hw)"></span>hot water</span>, <span class="key-item"><span class="swatch" style="background:var(--san)"></span>sanitary</span> and <span class="key-item"><span class="swatch" style="background:var(--vent)"></span>vent</span>.</p>
       <dl class="skills">
         <div><dt>Modelling</dt><dd>Revit MEP</dd><dd>Autodesk Fabrication Parts (CADmep)</dd><dd>AutoCAD</dd></div>
         <div><dt>Coordination</dt><dd>Navisworks clash detection</dd><dd>Autodesk Construction Cloud</dd><dd>Bluebeam</dd><dd>Procore</dd></div>
         <div><dt>Automation</dt><dd>Dynamo</dd><dd>Python</dd><dd>Revit and Navisworks add-ins</dd></div>
         <div><dt>Plumbing design</dt><dd>Domestic water</dd><dd>Sanitary and vent</dd><dd>Storm drainage</dd><dd>Rainwater and greywater reuse</dd></div>
       </dl>
+      <h3 class="key-h">Service colours</h3>
+      <p class="key-note">Each piping service keeps one colour across the drawings and the 3D model. The pale jacket marks insulated pipe.</p>
+      <div class="svc-key"><div><h4>Plumbing</h4><ul><li><span class="svc-swatch" style="--c:var(--san)"></span><span class="svc-abbr">SAN</span><span class="svc-name">Sanitary</span></li><li><span class="svc-swatch" style="--c:var(--vent)"></span><span class="svc-abbr">V</span><span class="svc-name">Vent</span></li><li><span class="svc-swatch" style="--c:var(--sd)"></span><span class="svc-abbr">SD</span><span class="svc-name">Storm drain</span></li><li><span class="svc-swatch" style="--c:var(--sod)"></span><span class="svc-abbr">SOD</span><span class="svc-name">Storm overflow drain</span></li><li><span class="svc-swatch" style="--c:var(--grease)"></span><span class="svc-abbr">GW</span><span class="svc-name">Sanitary grease</span></li><li><span class="svc-swatch" style="--c:var(--cd)"></span><span class="svc-abbr">CD</span><span class="svc-name">Condensate from HVAC</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--cw)"></span><span class="svc-abbr">CW</span><span class="svc-name">Cold water</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--chw)"></span><span class="svc-abbr">CHW</span><span class="svc-name">Chilled water</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--hw)"></span><span class="svc-abbr">HW</span><span class="svc-name">Hot water</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--hwr)"></span><span class="svc-abbr">HWR</span><span class="svc-name">Hot water return</span></li></ul></div><div><h4>Mechanical piping</h4><ul><li><span class="svc-swatch is-insulated" style="--c:var(--hhws)"></span><span class="svc-abbr">HHWS</span><span class="svc-name">Heating water supply</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--hhwr)"></span><span class="svc-abbr">HHWR</span><span class="svc-name">Heating water return</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--chws)"></span><span class="svc-abbr">CHWS</span><span class="svc-name">Chilled water supply</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--chwr)"></span><span class="svc-abbr">CHWR</span><span class="svc-name">Chilled water return</span></li><li><span class="svc-swatch" style="--c:var(--rl)"></span><span class="svc-abbr">RL</span><span class="svc-name">Refrigerant liquid</span></li><li><span class="svc-swatch is-insulated" style="--c:var(--rs)"></span><span class="svc-abbr">RS</span><span class="svc-name">Refrigerant suction</span></li></ul></div></div>
     </section>
 
     <section id="education" aria-labelledby="edu-h">

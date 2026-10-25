@@ -3,6 +3,7 @@
 // visually replaced once the WebGL scene has rendered its first frame.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { SERVICES } from './services.js';
 
 const host = document.getElementById('hero-art');
 if (host && webglAvailable()) {
@@ -28,11 +29,9 @@ function init(host) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const coarse = window.matchMedia('(pointer: coarse)').matches;
 
+  // Pipe colours come from the shared service registry (build/services.json)
+  const svcColor = (id) => token('--' + id, SERVICES[id].color);
   const COLORS = {
-    cw: token('--cw', '#2361C4'),
-    hw: token('--hw', '#C33E2E'),
-    san: token('--san', '#2F8540'),
-    vent: token('--vent', '#A8741A'),
     slab: '#E6EBEE',
     slabEdge: '#9AA9B2',
     sleeve: '#8C99A3',
@@ -111,12 +110,62 @@ function init(host) {
   ];
 
   const mats = {};
-  const pipeMat = (key) => (mats[key] ||= new THREE.MeshStandardMaterial({ color: COLORS[key], roughness: 0.38, metalness: 0.15 }));
+  const pipeMat = (key) => (mats[key] ||= new THREE.MeshStandardMaterial({ color: svcColor(key), roughness: 0.38, metalness: 0.15 }));
+  // Insulation: a jacket in the service colour at 80% transparency, like a Revit view override
+  const INS = 0.05; // jacket thickness in drawing units
+  const insulated = (key) => !!(SERVICES[key] && SERVICES[key].insulated);
+  const insMats = {};
+  const insMat = (key) => {
+    if (insMats[key]) return insMats[key];
+    const m = new THREE.MeshStandardMaterial({
+      color: svcColor(key), roughness: 0.6, metalness: 0, transparent: true, opacity: 0.2, depthWrite: false,
+    });
+    // Even out the shading and thicken the silhouette slightly, the way a
+    // translucent sleeve reads denser at its edges, so the jacket shows as
+    // a clean outline around the pipe instead of a one-sided glow.
+    m.onBeforeCompile = (shader) => {
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <opaque_fragment>',
+        `float rim = 1.0 - abs(dot(normalize(geometryNormal), geometryViewDir));
+        outgoingLight = mix(outgoingLight, diffuseColor.rgb, 0.45);
+        diffuseColor.a *= mix(0.8, 2.2, rim * rim);
+        #include <opaque_fragment>`);
+    };
+    return (insMats[key] = m);
+  };
   const segments = []; // { mesh, a, b, len, start, dur }
   const joints = [];   // { mesh, at }
+  const jackets = [];  // { mesh, steps, perStep, len, start }
   const SPEED = 3.2;   // drawing units per second while growing
 
+  // One continuous tube per run, with rounded corners, so the translucent
+  // jacket has no overlapping pieces that would show up darker at elbows.
+  function jacket(key, r, pts, start) {
+    const v = pts.map((q) => P(...q));
+    const path = new THREE.CurvePath();
+    let from = v[0];
+    let polyLen = 0;
+    for (let i = 1; i < v.length; i++) polyLen += v[i].distanceTo(v[i - 1]);
+    for (let i = 1; i < v.length - 1; i++) {
+      const rc = Math.min(0.12, v[i].distanceTo(v[i - 1]) / 2, v[i].distanceTo(v[i + 1]) / 2);
+      const p1 = v[i].clone().addScaledVector(v[i - 1].clone().sub(v[i]).normalize(), rc);
+      const p2 = v[i].clone().addScaledVector(v[i + 1].clone().sub(v[i]).normalize(), rc);
+      path.add(new THREE.LineCurve3(from, p1));
+      path.add(new THREE.QuadraticBezierCurve3(p1, v[i].clone(), p2));
+      from = p2;
+    }
+    path.add(new THREE.LineCurve3(from, v[v.length - 1]));
+    const steps = Math.max(8, Math.ceil(path.getLength() * 24));
+    const radial = 24;
+    const geo = new THREE.TubeGeometry(path, steps, r + INS, radial, false);
+    const mesh = new THREE.Mesh(geo, insMat(key));
+    mesh.renderOrder = 1;
+    root.add(mesh);
+    jackets.push({ mesh, steps, perStep: radial * 6, len: polyLen, start });
+  }
+
   for (const [key, r, pts, start] of runs) {
+    if (insulated(key)) jacket(key, r, pts, start);
     let t = start;
     for (let i = 0; i < pts.length - 1; i++) {
       const a = P(...pts[i]);
@@ -145,11 +194,14 @@ function init(host) {
   // Sleeves where pipes cross a slab
   const sleeveMat = new THREE.MeshStandardMaterial({ color: COLORS.sleeve, roughness: 0.5, metalness: 0.35 });
   const sleeves = [
-    [0.9, 0.6, 0, 0.06], [1.3, 0.6, 0, 0.05], [2.5, 0.6, 0, 0.09],
-    [0.9, 0.6, 3, 0.06], [1.3, 0.6, 3, 0.05], [2.5, 0.6, 3, 0.09], [3.0, 0.6, 3, 0.06], [2.5, 2.4, 3, 0.07],
+    ['cw', 0.9, 0.6, 0, 0.06], ['hw', 1.3, 0.6, 0, 0.05], ['san', 2.5, 0.6, 0, 0.09],
+    ['cw', 0.9, 0.6, 3, 0.06], ['hw', 1.3, 0.6, 3, 0.05], ['san', 2.5, 0.6, 3, 0.09],
+    ['vent', 3.0, 0.6, 3, 0.06], ['san', 2.5, 2.4, 3, 0.07],
   ];
-  for (const [x, y, z, r] of sleeves) {
-    const s = new THREE.Mesh(new THREE.CylinderGeometry(r + 0.045, r + 0.045, T + 0.18, 24, 1, true), sleeveMat);
+  for (const [key, x, y, z, r] of sleeves) {
+    // insulation runs through the sleeve, so the sleeve is sized over the jacket
+    const sr = r + (insulated(key) ? INS + 0.025 : 0.045);
+    const s = new THREE.Mesh(new THREE.CylinderGeometry(sr, sr, T + 0.18, 24, 1, true), sleeveMat);
     s.material.side = THREE.DoubleSide;
     s.position.copy(P(x, y, z - T / 2 + 0.02));
     s.castShadow = true;
@@ -180,7 +232,8 @@ function init(host) {
 
   // Threaded-rod hangers holding the runs that hang under the level 2 slab
   const rodMat = new THREE.MeshStandardMaterial({ color: '#7D8B95', roughness: 0.45, metalness: 0.6 });
-  const hanger = (x, y, zPipe, r) => {
+  const hanger = (x, y, zPipe, r, key) => {
+    if (insulated(key)) r += INS; // the clevis carries the pipe over its insulation
     const top = 3 - T;
     const len = top - (zPipe + r);
     const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, len, 8), rodMat);
@@ -192,10 +245,10 @@ function init(host) {
     ring.rotation.y = Math.abs(x - 2.5) < 0.01 ? 0 : Math.PI / 2;
     root.add(ring);
   };
-  hanger(2.5, 1.2, 2.55, 0.07);
-  hanger(2.5, 1.9, 2.55, 0.07);
-  hanger(0.9, 1.3, 0.8, 0.045);
-  hanger(1.3, 1.1, 0.6, 0.04);
+  hanger(2.5, 1.2, 2.55, 0.07, 'san');
+  hanger(2.5, 1.9, 2.55, 0.07, 'san');
+  hanger(0.9, 1.3, 0.8, 0.045, 'cw');
+  hanger(1.3, 1.1, 0.6, 0.04, 'hw');
 
   // A faint drawing grid under the model
   const grid = new THREE.GridHelper(9, 18, 0xD3DCE1, 0xE3E9EC);
@@ -268,6 +321,11 @@ function init(host) {
       s.mesh.scale.set(1, Math.max(f, 0.0001) * s.len, 1);
     }
     for (const j of joints) j.mesh.visible = t >= j.at;
+    for (const k of jackets) {
+      const f = THREE.MathUtils.clamp(((t - k.start) * SPEED) / k.len, 0, 1);
+      k.mesh.visible = f > 0;
+      k.mesh.geometry.setDrawRange(0, Math.floor(f * k.steps) * k.perStep);
+    }
     stage.classList.toggle('labels-on', t >= introEnd);
   }
 

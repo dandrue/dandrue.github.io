@@ -31,13 +31,10 @@
     --slab: #E1E7EB;
     --slab-side: #C9D3D9;
     --slab-front: #D5DDE2;
-    --cw: #2361C4;
-    --hw: #C33E2E;
-    --san: #2F8540;
-    --vent: #A8741A;
-    --storm: #1C8A97;
+    /* piping services, generated from build/services.json */
+{{SERVICE_TOKENS}}
     --greywater: #77852A;
-    --reclaim: #7651B2;
+    --reclaim: #0E8A7B;
     --markup: #D2342B;
     --wide: "wdth" 122;
     --narrow: "wdth" 76;
@@ -137,8 +134,19 @@
   .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin: 0; }
   .skills dt { font-weight: 650; padding-bottom: 8px; border-bottom: 2.5px solid var(--ink); margin-bottom: 10px; }
   .skills dd { margin: 0 0 4px; color: var(--ink-2); }
-  .key-item { white-space: nowrap; }
-  .swatch { display: inline-block; width: 18px; height: 4px; border-radius: 2px; vertical-align: middle; margin-right: 8px; }
+  #skills .skills { margin-top: 28px; }
+
+  /* piping service colour key */
+  .key-h { margin-top: 56px; font-size: 19px; }
+  .key-note { margin-top: 6px; max-width: var(--measure); color: var(--ink-2); }
+  .svc-key { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; margin-top: 22px; }
+  .svc-key h4 { margin: 0 0 12px; padding-bottom: 8px; border-bottom: 2.5px solid var(--ink); font-size: 17px; font-weight: 650; }
+  .svc-key ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; }
+  .svc-key li { display: flex; align-items: center; gap: 10px; min-width: 0; line-height: 1.3; }
+  .svc-swatch { flex: none; width: 30px; height: 6px; border-radius: 3px; margin: 0 4px; background: var(--c); }
+  .svc-swatch.is-insulated { box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 20%, transparent); }
+  .svc-abbr { flex: none; width: 3.1em; font-weight: 700; font-size: 14px; font-variation-settings: var(--narrow); letter-spacing: 0.02em; }
+  .svc-name { color: var(--ink-2); font-size: 15px; }
 
   .edu { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; }
   .edu h3 { font-size: 19px; }
@@ -231,6 +239,7 @@
     .work article, .tools, .edu { grid-template-columns: 1fr; gap: 24px; }
     .work { gap: 56px; }
     .skills { grid-template-columns: 1fr 1fr; }
+    .svc-key { grid-template-columns: 1fr; gap: 28px; }
     section { padding-top: 64px; }
   }
   @media (max-width: 560px) {
@@ -238,6 +247,7 @@
     .top nav { gap: 16px; }
     .timeline li { grid-template-columns: 1fr; gap: 2px; }
     .skills { grid-template-columns: 1fr; }
+    .svc-key ul { grid-template-columns: 1fr; }
     h2 { font-size: 28px; }
     .hero .role { font-size: 20px; }
   }
@@ -366,13 +376,15 @@
 
     <section id="skills" aria-labelledby="skills-h">
       <h2 id="skills-h">What I work with</h2>
-      <p class="intro">The colours on this page follow the usual plumbing system colours: <span class="key-item"><span class="swatch" style="background:var(--cw)"></span>cold water</span>, <span class="key-item"><span class="swatch" style="background:var(--hw)"></span>hot water</span>, <span class="key-item"><span class="swatch" style="background:var(--san)"></span>sanitary</span> and <span class="key-item"><span class="swatch" style="background:var(--vent)"></span>vent</span>.</p>
       <dl class="skills">
         <div><dt>Modelling</dt><dd>Revit MEP</dd><dd>Autodesk Fabrication Parts (CADmep)</dd><dd>AutoCAD</dd></div>
         <div><dt>Coordination</dt><dd>Navisworks clash detection</dd><dd>Autodesk Construction Cloud</dd><dd>Bluebeam</dd><dd>Procore</dd></div>
         <div><dt>Automation</dt><dd>Dynamo</dd><dd>Python</dd><dd>Revit and Navisworks add-ins</dd></div>
         <div><dt>Plumbing design</dt><dd>Domestic water</dd><dd>Sanitary and vent</dd><dd>Storm drainage</dd><dd>Rainwater and greywater reuse</dd></div>
       </dl>
+      <h3 class="key-h">Service colours</h3>
+      <p class="key-note">Each piping service keeps one colour across the drawings and the 3D model. The pale jacket marks insulated pipe.</p>
+      {{SERVICE_KEY}}
     </section>
 
     <section id="education" aria-labelledby="edu-h">
