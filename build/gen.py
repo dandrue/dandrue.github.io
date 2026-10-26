@@ -91,16 +91,6 @@ def box_faces(p, x0, x1, y0, y1, z0, z1, cls_top, cls_side, cls_front):
     return poly(top, cls_top) + poly(front_y, cls_front) + poly(side_x, cls_side)
 
 
-# ---------------------------------------------------------------- hero: water heater room
-
-sys.path.insert(0, str(Path(__file__).parent))
-import hero_scene  # noqa: E402
-
-
-def hero_svg():
-    return hero_scene.hero_svg(C, pipe, text, poly, fmt)
-
-
 # --------------------------------------------------- work: reroute around beam
 
 def reroute_svg():
@@ -344,7 +334,6 @@ def build(out_dir: Path):
             .replace("{{SERVICE_TOKENS}}", service_tokens())
             .replace("{{SERVICE_KEY}}", service_key())
             .replace("{{PROJECT_SHOTS}}", project_shots())
-            .replace("{{HERO_SVG}}", hero_svg())
             .replace("{{FIG_REROUTE}}", figure(reroute_svg(), "Cold water rerouted under a beam",
                                                 "Replace with a Navisworks clash view or Revit 3D view (client info removed)"))
             .replace("{{FIG_REUSE}}", figure(reuse_svg(), "Rainwater and greywater reuse",
@@ -362,8 +351,7 @@ def build(out_dir: Path):
     js_dir = out_dir / "assets" / "js"
     js_dir.mkdir(parents=True, exist_ok=True)
     (js_dir / "services.js").write_text(services_js(), encoding="utf-8")
-    (js_dir / "hero-scene.js").write_text(hero_scene.scene_js(), encoding="utf-8")
-    print("wrote", js_dir / "services.js", "and hero-scene.js")
+    print("wrote", js_dir / "services.js")
 
 
 if __name__ == "__main__":

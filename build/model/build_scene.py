@@ -8,6 +8,9 @@ from groups import meta, klass, load
 REGION = dict(xmin=118.0, xmax=152.5, ymin=-80.0, ymax=6.5)
 SPEED = float(sys.argv[1]) if len(sys.argv) > 1 else 22.0   # feet per second while growing
 OUT = sys.argv[2] if len(sys.argv) > 2 else "out"
+if len(sys.argv) > 3:   # optional region: xmin,xmax,ymin,ymax
+    REGION = dict(zip(("xmin", "xmax", "ymin", "ymax"), map(float, sys.argv[3].split(","))))
+NAME = sys.argv[4] if len(sys.argv) > 4 else "plumbing"
 
 PIPE_FAMS = ("Pipe",)
 def is_pipe_family(f): return f is not None and "Pipe" in f and "Coupling" not in f
@@ -184,7 +187,8 @@ dijkstra(pick_root(dwv[0], "san"), 0.0)
 def attach_rest(groups, svc):
     for c in groups:
         if c[0] in time: continue
-        done = [i for i in time]
+        water = svc in ("cw", "hw")
+        done = [i for i in time if (SVC[els[i]["g"]] in ("cw", "hw")) == water] or list(time)
         dc = np.array([els[i]["c"] for i in done]); tr = cKDTree(dc)
         best = min(c, key=lambda i: tr.query(els[i]["c"])[0])
         dd, j = tr.query(els[best]["c"])
@@ -280,6 +284,6 @@ for name, svc in LAYERS:
     header["layers"].append(L)
 import os
 os.makedirs(OUT, exist_ok=True)
-open(f"{OUT}/plumbing.bin", "wb").write(b"".join(blobs))
-json.dump(header, open(f"{OUT}/plumbing.json", "w"), indent=1)
+open(f"{OUT}/{NAME}.bin", "wb").write(b"".join(blobs))
+json.dump(header, open(f"{OUT}/{NAME}.json", "w"), indent=1)
 print("bin bytes", off, "layers", [(l["name"], l["vertices"], l["triangles"]) for l in header["layers"]])

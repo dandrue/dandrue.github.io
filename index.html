@@ -146,6 +146,7 @@
   .timeline .what p { margin-top: 4px; }
 
   /* interactive model */
+  .model-stage.hero-stage { aspect-ratio: 560 / 520; border: 0; background: transparent; }
   .model { margin: 28px 0 0; }
   .model-stage { position: relative; aspect-ratio: 16 / 9; background: var(--sheet); border: 1px solid var(--rule); overflow: hidden; }
   .model-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s ease; }
@@ -229,28 +230,6 @@
   .slab-front { fill: var(--slab-front); stroke: #9AA9B2; stroke-width: 1; }
   .sleeve { stroke: #8494A0; stroke-width: 10; stroke-linecap: butt; fill: none; }
   .fixture { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.4; }
-  /* hero: water heater room */
-  .slab-see { fill-opacity: 0.72; }
-  .pipe.under { stroke-opacity: 0.75; }
-  .wall-face { fill: #EDF1F3; stroke: #B5C1C8; stroke-width: 1; }
-  .wall-back { fill: #E6EBEE; }
-  .wall-top { fill: #D7DFE4; stroke: #9AA9B2; stroke-width: 1; }
-  .wall-end { fill: #DCE3E7; stroke: #9AA9B2; stroke-width: 1; }
-  .fx { fill: #FBFCFD; stroke: var(--ink-2); stroke-width: 1.1; }
-  .fx-front { fill: #F1F4F6; }
-  .fx-side { fill: #E6EBEE; }
-  .fx-basin { fill: #E1E7EB; stroke: var(--ink-2); stroke-width: 0.8; }
-  .tank { stroke: var(--ink); stroke-width: 1.2; }
-  .drain { fill: #2A343B; stroke: #AEB8BF; stroke-width: 1.2; }
-  .vlv { fill: #5E6A72; stroke: #2A343B; stroke-width: 0.8; }
-  .vlv-bell { fill: #AEB8BF; }
-  .vlv-pump { fill: #3D6E9E; }
-  .vlv-tmv { fill: #AEB8BF; }
-  .vlv-rpz { fill: #C9A227; }
-  .vlv-stem { stroke: #5E6A72; stroke-width: 1.4; }
-  .vlv-wheel { fill: none; stroke: #B23A2E; stroke-width: 1.6; }
-  .pop { opacity: 0; animation: pop .35s ease-out forwards; animation-delay: var(--d, 0s); }
-  @keyframes pop { to { opacity: 1; } }
   .beam-top { fill: #BAC6CE; stroke: #7D8D98; stroke-width: 1; }
   .beam-side { fill: #A3B0B9; stroke: #7D8D98; stroke-width: 1; }
   .beam-front { fill: #AFBCC5; stroke: #7D8D98; stroke-width: 1; }
@@ -276,17 +255,6 @@
   .sleeve-sec { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.4; }
 
   /* 3D hero: the canvas fades in over the SVG drawing once WebGL has rendered */
-  .hero-art { position: relative; }
-  .riser3d { position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; }
-  .riser3d canvas { display: block; cursor: grab; }
-  .riser3d canvas:active { cursor: grabbing; }
-  .hero-art.is-3d .riser3d { opacity: 1; }
-  .hero-art.is-3d > svg.riser { opacity: 0; transition: opacity .3s ease; }
-  .riser3d-labels { position: absolute; inset: 0; pointer-events: none; }
-  .riser3d-label { position: absolute; left: 0; top: 0; translate: 10px -135%; white-space: nowrap; font-size: 14px; font-weight: 650; font-variation-settings: var(--narrow); color: var(--ink); opacity: 0; transition: opacity .5s ease; }
-  .riser3d-label.is-level { translate: calc(-100% - 10px) -50%; font-size: 13px; }
-  .riser3d-label.is-left { translate: calc(-100% - 10px) -135%; }
-  .labels-on .riser3d-label { opacity: 1; }
   .hero-hint { margin: 4px 0 0; text-align: right; font-size: 13px; color: var(--ink-2); font-variation-settings: var(--narrow); }
 
   /* the one moment of motion: the riser draws itself on load */
@@ -294,9 +262,7 @@
   @keyframes draw { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) {
     .draw { animation: none; stroke-dashoffset: 0; stroke-dasharray: none; }
-    .pop { animation: none; opacity: 1; }
-    .riser3d, .hero-art.is-3d > svg.riser, .riser3d-label, .model-poster, .model3d, .shot img { transition: none; }
-    html { scroll-behavior: auto; }
+        html { scroll-behavior: auto; }
   }
 
   @media (max-width: 900px) {
@@ -352,73 +318,9 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-art" id="hero-art"><svg class="riser" viewBox="0 0 560 520" role="img" aria-labelledby="riser-t riser-d" xmlns="http://www.w3.org/2000/svg"><title id="riser-t">Isometric view of a water heater room</title><desc id="riser-d">A residential water heater room: a 3 inch cold water main enters through the wall and drops to a pressure reducing valve station, a 1 inch branch feeds the electric water heater, hot water leaves through a mixing valve with a recirculating return and pump, an irrigation line runs through a backflow preventer, and a mop sink and two floor drains connect to sanitary piping below the slab.</desc><path d="M159.0,376.3 L159.0,351.9" stroke="var(--san)" stroke-width="7.325133676795106" pathLength="1" class="pipe under draw" style="--d:0s"/>
-<path d="M159.0,351.9 L187.2,334.1 L261.7,369.5" stroke="var(--san)" stroke-width="7.325133676795106" pathLength="1" class="pipe under draw" style="--d:0.141s"/>
-<path d="M261.7,369.5 L261.7,376.5 L269.2,380.9 L269.2,353.8" stroke="var(--san)" stroke-width="7.325133676795106" pathLength="1" class="pipe under draw" style="--d:0.827s"/>
-<path d="M222.3,351.1 L283.3,348.4 L322.6,323.5 L322.6,330.5 L330.1,326.2 L330.1,309.4" stroke="var(--san)" stroke-width="5.634718212919314" pathLength="1" class="pipe under draw" style="--d:0.563s"/>
-<path d="M159.0,351.9 L159.0,332.4" stroke="var(--vent)" stroke-width="5.0712463916273816" pathLength="1" class="pipe under draw" style="--d:1.074s"/>
-<polygon class="slab-front" points="122.0,311.6 334.8,434.5 334.8,447.5 122.0,324.6" />
-<polygon class="slab-side" points="482.0,349.5 334.8,434.5 334.8,447.5 482.0,362.5" />
-<polygon class="slab-top slab-see" points="269.2,226.6 482.0,349.5 334.8,434.5 122.0,311.6" />
-<path d="M159.0,376.3 L159.0,339.5" stroke="var(--san)" stroke-width="7.325133676795106" pathLength="1" class="pipe draw" style="--d:0s"/>
-<polygon class="wall-face" points="269.2,234.2 128.6,315.4 128.6,136.8 269.2,55.6" />
-<polygon class="wall-face wall-back" points="269.2,234.2 475.4,353.3 475.4,174.7 269.2,55.6" />
-<polygon class="wall-top" points="269.2,48.0 275.8,51.8 128.6,136.8 122.0,133.0" />
-<polygon class="wall-top" points="269.2,48.0 482.0,170.9 475.4,174.7 269.2,55.6" />
-<polygon class="wall-end" points="122.0,311.6 128.6,315.4 128.6,136.8 122.0,133.0" />
-<polygon class="wall-end" points="482.0,349.5 475.4,353.3 475.4,174.7 482.0,170.9" />
-<path d="M243.4,80.2 L254.2,86.4" class="sleeve" style="stroke-width:11.3"/>
-<path d="M258.9,111.9 L258.9,125.4" stroke="var(--cw)" stroke-width="7.9" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.522s"/><path d="M258.9,111.9 L258.9,125.4" stroke="var(--cw)" stroke-width="2.817359106459657" pathLength="1" class="pipe draw" style="--d:1.522s"/>
-<g class="pop" style="--d:1.622s"><path d="M250.3,125.4 L250.3,149.8 A8.6,5.0 0 0 0 267.5,149.8 L267.5,125.4" class="fx tank"/><path d="M250.3,125.4 A8.6,5.3 0 0 1 267.5,125.4 A8.6,5.0 0 0 1 250.3,125.4" class="fx tank"/></g>
-<path d="M278.6,100.5 L236.8,124.6" stroke="var(--cw)" stroke-width="11.0" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.391s"/><path d="M278.6,100.5 L236.8,124.6" stroke="var(--cw)" stroke-width="3.944302749043519" pathLength="1" class="pipe draw" style="--d:1.391s"/>
-<path d="M242.5,79.7 L356.8,145.7" stroke="var(--cw)" stroke-width="20.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M242.5,79.7 L356.8,145.7" stroke="var(--cw)" stroke-width="7.325133676795106" pathLength="1" class="pipe draw" style="--d:1.15s"/>
-<path d="M261.7,90.8 L169.3,144.1" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.278s"/><path d="M261.7,90.8 L169.3,144.1" stroke="var(--cw)" stroke-width="3.3808309277515876" pathLength="1" class="pipe draw" style="--d:1.278s"/>
-<path d="M179.2,239.1 L190.0,245.3" class="sleeve" style="stroke-width:7.4"/>
-<path d="M197.5,249.6 L178.3,238.5" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.278s"/><path d="M197.5,249.6 L178.3,238.5" stroke="var(--cw)" stroke-width="3.3808309277515876" pathLength="1" class="pipe draw" style="--d:1.278s"/>
-<path d="M236.8,124.6 L236.8,177.1" stroke="var(--cw)" stroke-width="11.0" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.391s"/><path d="M236.8,124.6 L236.8,177.1" stroke="var(--cw)" stroke-width="3.944302749043519" pathLength="1" class="pipe draw" style="--d:1.391s"/>
-<g class="pop" style="--d:1.772s"><circle cx="236.8" cy="142.5" r="3.7" class="vlv"/></g>
-<path d="M236.8,155.4 L256.5,166.8" stroke="var(--cw)" stroke-width="7.9" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.847s"/><path d="M236.8,155.4 L256.5,166.8" stroke="var(--cw)" stroke-width="2.817359106459657" pathLength="1" class="pipe draw" style="--d:1.847s"/>
-<path d="M169.3,265.9 L197.5,249.6" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.278s"/><path d="M169.3,265.9 L197.5,249.6" stroke="var(--cw)" stroke-width="3.3808309277515876" pathLength="1" class="pipe draw" style="--d:1.278s"/>
-<path d="M330.1,309.4 L330.1,272.1" stroke="var(--san)" stroke-width="4.50777457033545" pathLength="1" class="pipe draw" style="--d:1.301s"/>
-<g class="pop" style="--d:1.972s"><path d="M206.5,193.6 L206.5,295.9 A29.8,17.2 0 0 0 266.2,295.9 L266.2,193.6" class="fx tank"/><path d="M206.5,193.6 A29.8,18.5 0 0 1 266.2,193.6 A29.8,17.2 0 0 1 206.5,193.6" class="fx tank"/></g>
-<g class="pop" style="--d:1.517s"><polygon class="fx fx-front" points="292.6,252.1 330.1,273.7 330.1,293.7 292.6,272.1" /><polygon class="fx fx-side" points="366.7,252.6 330.1,273.7 330.1,293.7 366.7,272.6" /><polygon class="fx" points="329.2,230.9 366.7,252.6 330.1,273.7 292.6,252.1" /><polygon class="fx-basin" points="329.2,236.4 357.3,252.6 330.1,268.3 302.0,252.1" /></g>
-<g class="pop" style="--d:2.691s"><rect x="175.7" y="254.2" width="15.4" height="7.1" rx="3.2" class="vlv vlv-rpz" transform="rotate(-30 183.4 257.7)"/></g>
-<path d="M256.5,166.8 L245.8,173.0" stroke="var(--cw)" stroke-width="7.9" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.847s"/><path d="M256.5,166.8 L245.8,173.0" stroke="var(--cw)" stroke-width="2.817359106459657" pathLength="1" class="pipe draw" style="--d:1.847s"/>
-<path d="M169.3,144.1 L169.3,265.9" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.278s"/><path d="M169.3,144.1 L169.3,265.9" stroke="var(--cw)" stroke-width="3.3808309277515876" pathLength="1" class="pipe draw" style="--d:1.278s"/>
-<path d="M245.8,197.4 L245.8,125.9" stroke="var(--hw)" stroke-width="11.0" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:2.522s"/><path d="M245.8,197.4 L245.8,125.9" stroke="var(--hw)" stroke-width="3.944302749043519" pathLength="1" class="pipe draw" style="--d:2.522s"/>
-<g class="pop" style="--d:2.347s"><line x1="169.3" y1="222.6" x2="169.3" y2="212.3" class="vlv-stem"/><circle cx="169.3" cy="222.6" r="4.0" class="vlv"/><ellipse cx="169.3" cy="212.3" rx="5.8" ry="2.6" class="vlv-wheel"/></g>
-<path d="M356.8,145.7 L356.8,226.9" stroke="var(--cw)" stroke-width="20.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M356.8,145.7 L356.8,226.9" stroke="var(--cw)" stroke-width="7.325133676795106" pathLength="1" class="pipe draw" style="--d:1.15s"/>
-<g class="pop" style="--d:2.647s"><rect x="240.9" y="170.9" width="9.7" height="9.7" rx="2" class="vlv vlv-tmv"/></g>
-<path d="M265.9,262.1 L257.5,257.2" stroke="var(--hwr)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:2.809s"/><path d="M265.9,262.1 L257.5,257.2" stroke="var(--hwr)" stroke-width="3.3808309277515876" pathLength="1" class="pipe draw" style="--d:2.809s"/>
-<path d="M265.9,137.6 L265.9,262.1" stroke="var(--hwr)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:2.809s"/><path d="M265.9,137.6 L265.9,262.1" stroke="var(--hwr)" stroke-width="3.3808309277515876" pathLength="1" class="pipe draw" style="--d:2.809s"/>
-<g class="pop" style="--d:3.122s"><circle cx="265.9" cy="191.7" r="4.8" class="vlv vlv-pump"/><rect x="267.8" y="188.8" width="9.6" height="5.8" rx="2" class="vlv vlv-pump"/></g>
-<g class="pop" style="--d:3.309s"><circle cx="265.9" cy="224.2" r="3.2" class="vlv"/></g>
-<path d="M159.0,322.7 L159.0,314.0" class="sleeve" style="stroke-width:9.1"/>
-<path d="M159.0,332.4 L159.0,140.8" stroke="var(--vent)" stroke-width="5.0712463916273816" pathLength="1" class="pipe draw" style="--d:1.187s"/>
-<g class="pop" style="--d:2.537s"><line x1="380.3" y1="240.4" x2="380.3" y2="218.2" class="vlv-stem"/><circle cx="380.3" cy="240.4" r="8.7" class="vlv"/><ellipse cx="380.3" cy="218.2" rx="12.5" ry="5.6" class="vlv-wheel"/></g>
-<path d="M356.8,226.9 L441.2,275.6" stroke="var(--cw)" stroke-width="20.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M356.8,226.9 L441.2,275.6" stroke="var(--cw)" stroke-width="7.325133676795106" pathLength="1" class="pipe draw" style="--d:1.15s"/>
-<g class="pop" style="--d:2.694s"><circle cx="403.7" cy="254.0" r="9.7" class="vlv"/><path d="M396.8,245.6 L392.6,228.9 H414.9 L410.7,245.6 Z" class="vlv vlv-bell"/></g>
-<ellipse cx="269.2" cy="350.3" rx="11.3" ry="6.5" class="drain pop" style="--d:1.074s"/>
-<g class="pop" style="--d:2.85s"><line x1="427.2" y1="267.5" x2="427.2" y2="245.2" class="vlv-stem"/><circle cx="427.2" cy="267.5" r="8.7" class="vlv"/><ellipse cx="427.2" cy="245.2" rx="12.5" ry="5.6" class="vlv-wheel"/></g>
-<path d="M441.2,275.6 L441.2,175.5" stroke="var(--cw)" stroke-width="20.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M441.2,275.6 L441.2,175.5" stroke="var(--cw)" stroke-width="7.325133676795106" pathLength="1" class="pipe draw" style="--d:1.15s"/>
-<path d="M441.2,175.5 l10,-8 h6" class="leader"/>
-<text x="460.2" y="171.5" class="lbl lbl-pipe" text-anchor="start" >3" CW</text>
-<path d="M403.7,244.7 l10,-8 h6" class="leader"/>
-<text x="422.7" y="240.7" class="lbl lbl-pipe" text-anchor="start" >3" PRV</text>
-<path d="M238.7,249.1 l10,-8 h6" class="leader"/>
-<text x="257.7" y="245.1" class="lbl lbl-pipe" text-anchor="start" >EWH-1</text>
-<path d="M245.8,125.9 l-10,-8 h-6" class="leader"/>
-<text x="226.8" y="121.9" class="lbl lbl-pipe" text-anchor="end" >HW</text>
-<path d="M265.9,137.6 l10,-8 h6" class="leader"/>
-<text x="284.9" y="133.6" class="lbl lbl-pipe" text-anchor="start" >HWR</text>
-<path d="M159.0,140.8 l-10,-8 h-6" class="leader"/>
-<text x="140.0" y="136.8" class="lbl lbl-pipe" text-anchor="end" >2" V</text>
-<path d="M330.1,284.5 l10,-8 h6" class="leader"/>
-<text x="349.1" y="280.5" class="lbl lbl-pipe" text-anchor="start" >FD-1</text>
-<path d="M269.2,350.6 l10,-8 h6" class="leader"/>
-<text x="288.2" y="346.6" class="lbl lbl-pipe" text-anchor="start" >3" FD-5</text>
-<path d="M120.6,315.4 H18" class="level-line"/>
-<text x="18.0" y="308.4" class="lbl lbl-level" text-anchor="start" >Level 2</text></svg></div>
+        <div class="hero-art model-stage hero-stage" id="hero-art" data-src="assets/models/hero">
+          <img class="model-poster" src="assets/img/hero-poster.jpg" width="1120" height="1040" fetchpriority="high" decoding="async" alt="3D view of the plumbing for one restroom group: green sanitary piping below a translucent floor slab, ochre vents rising above it, blue cold water and red hot water lines with translucent insulation overhead, and white fixtures along the walls.">
+        </div>
         <p class="hero-hint" id="hero-hint" hidden>Drag to rotate the model</p>
       </div>
     </div>
