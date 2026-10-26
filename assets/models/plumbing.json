@@ -1,0 +1,140 @@
+{
+ "layers": [
+  {
+   "name": "san_bg",
+   "service": "san",
+   "vertices": 10732,
+   "triangles": 17724,
+   "indexType": "u16",
+   "position": 0,
+   "normal": 64392,
+   "reveal": 107320,
+   "index": 128784
+  },
+  {
+   "name": "san_ag",
+   "service": "san",
+   "vertices": 6946,
+   "triangles": 10186,
+   "indexType": "u16",
+   "position": 235128,
+   "normal": 276804,
+   "reveal": 304588,
+   "index": 318480
+  },
+  {
+   "name": "vent",
+   "service": "vent",
+   "vertices": 9295,
+   "triangles": 12642,
+   "indexType": "u16",
+   "position": 379596,
+   "normal": 435368,
+   "reveal": 472548,
+   "index": 491140
+  },
+  {
+   "name": "sd",
+   "service": "sd",
+   "vertices": 841,
+   "triangles": 1430,
+   "indexType": "u16",
+   "position": 566992,
+   "normal": 572040,
+   "reveal": 575404,
+   "index": 577088
+  },
+  {
+   "name": "cw",
+   "service": "cw",
+   "vertices": 12894,
+   "triangles": 19267,
+   "indexType": "u16",
+   "position": 585668,
+   "normal": 663032,
+   "reveal": 714608,
+   "index": 740396
+  },
+  {
+   "name": "hw",
+   "service": "hw",
+   "vertices": 1974,
+   "triangles": 3220,
+   "indexType": "u16",
+   "position": 856000,
+   "normal": 867844,
+   "reveal": 875740,
+   "index": 879688
+  },
+  {
+   "name": "ins_cw",
+   "service": "cw",
+   "vertices": 12391,
+   "triangles": 17050,
+   "indexType": "u16",
+   "position": 899008,
+   "normal": 973356,
+   "reveal": 1022920,
+   "index": 1047704
+  },
+  {
+   "name": "ins_hw",
+   "service": "hw",
+   "vertices": 2327,
+   "triangles": 3353,
+   "indexType": "u16",
+   "position": 1150004,
+   "normal": 1163968,
+   "reveal": 1173276,
+   "index": 1177932
+  },
+  {
+   "name": "fix",
+   "service": "fix",
+   "vertices": 12560,
+   "triangles": 24837,
+   "indexType": "u16",
+   "position": 1198052,
+   "normal": 1273412,
+   "reveal": 1323652,
+   "index": 1348772
+  }
+ ],
+ "scale": [
+  0.0004970972124808151,
+  0.00038504677567239963,
+  0.0011336254243945957
+ ],
+ "offset": [
+  -16.288632909965102,
+  -6.500000012596295,
+  -37.14607109384991
+ ],
+ "duration": 8.146709711148711,
+ "waterStart": 2.9454127623221726,
+ "units": "ft",
+ "bbox": [
+  [
+   -16.288632909965102,
+   -6.500000012596295,
+   -37.14607109384991
+  ],
+  [
+   16.288632909965116,
+   18.734040431094414,
+   37.14607109384991
+  ]
+ ],
+ "region": [
+  [
+   -16.285595374612996,
+   0.0,
+   41.35493833255764
+  ],
+  [
+   18.214404625387004,
+   0.0,
+   -45.14506166744236
+  ]
+ ]
+}

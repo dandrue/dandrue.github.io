@@ -145,6 +145,38 @@
   .timeline .what span { display: block; color: var(--ink-2); font-size: 15px; }
   .timeline .what p { margin-top: 4px; }
 
+  /* interactive model */
+  .model { margin: 28px 0 0; }
+  .model-stage { position: relative; aspect-ratio: 16 / 9; background: var(--sheet); border: 1px solid var(--rule); overflow: hidden; }
+  .model-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s ease; }
+  .model-stage.is-3d .model-poster { opacity: 0; }
+  .model3d { position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; }
+  .model-stage.is-3d .model3d { opacity: 1; }
+  .model3d canvas { display: block; cursor: grab; }
+  .model3d canvas:active { cursor: grabbing; }
+  .model-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+  .model-bar[hidden] { display: none; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1.5px solid var(--rule); border-radius: 999px; background: var(--sheet); font: inherit; font-size: 14px; line-height: 1.2; color: var(--ink); cursor: pointer; }
+  .chip:hover { border-color: var(--ink-2); }
+  .chip[aria-pressed="false"] { color: var(--ink-2); background: transparent; border-style: dashed; }
+  .chip[aria-pressed="false"] .chip-sw { opacity: .25; }
+  .chip-sw { width: 18px; height: 5px; border-radius: 3px; background: var(--c); }
+  .chip-sw.is-insulated { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 20%, transparent); }
+  .chip-sw-fix { background: #fff; box-shadow: inset 0 0 0 1px var(--ink-2); height: 8px; }
+  .model-tools { display: inline-flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+  .chip-icon { width: 34px; justify-content: center; padding-left: 0; padding-right: 0; font-weight: 700; font-size: 17px; }
+  .chip-replay { border-color: var(--ink); font-weight: 600; }
+  .model figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 12px; padding-top: 6px; border-top: 2.5px solid var(--ink); }
+
+  /* project snapshots */
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 32px; }
+  .shot .view-frame { display: block; padding: 0; overflow: hidden; }
+  .shot img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: contain; background: #fff; transition: transform .3s ease; }
+  .shot a:hover img { transform: scale(1.02); }
+  .shot:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .shot:last-child:nth-child(odd) img { aspect-ratio: 16 / 9; }
+  #projects .actions { margin-top: 36px; }
+
   /* skills */
   .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin: 0; }
   .skills dt { font-weight: 650; padding-bottom: 8px; border-bottom: 2.5px solid var(--ink); margin-bottom: 10px; }
@@ -240,7 +272,7 @@
   @keyframes draw { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) {
     .draw { animation: none; stroke-dashoffset: 0; stroke-dasharray: none; }
-    .riser3d, .hero-art.is-3d > svg.riser, .riser3d-label { transition: none; }
+    .riser3d, .hero-art.is-3d > svg.riser, .riser3d-label, .model-poster, .model3d, .shot img { transition: none; }
     html { scroll-behavior: auto; }
   }
 
@@ -255,6 +287,7 @@
     .work { gap: 56px; }
     .skills { grid-template-columns: 1fr 1fr; }
     .svc-key { grid-template-columns: 1fr; gap: 28px; }
+    .shots { grid-template-columns: 1fr; }
     section { padding-top: 64px; }
   }
   @media (max-width: 560px) {
@@ -263,6 +296,8 @@
     .timeline li { grid-template-columns: 1fr; gap: 2px; }
     .skills { grid-template-columns: 1fr; }
     .svc-key ul { grid-template-columns: 1fr; }
+    .model-stage { aspect-ratio: 4 / 5; }
+    .model-tools { margin-left: 0; }
     h2 { font-size: 28px; }
     .hero .role { font-size: 20px; }
   }
@@ -274,8 +309,9 @@
   <header class="top">
     <a class="mark" href="#main">Diego Rueda</a>
     <nav aria-label="Sections">
+      <a href="#model">Model</a>
       <a href="#work">Work</a>
-      <a href="#tools">Tools</a>
+      <a href="#projects">Projects</a>
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -290,6 +326,7 @@
         <div class="actions">
           <a class="btn btn-primary" href="mailto:d.ruedaq@gmail.com">Email me</a>
           <a class="btn btn-ghost" href="https://www.linkedin.com/in/diegoarueda/">LinkedIn profile</a>
+          <a class="btn btn-ghost" href="assets/docs/diego-rueda-portfolio.pdf">Portfolio (PDF)</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -348,9 +385,37 @@
       <div><dt>Languages</dt><dd>Spanish, English, basic French</dd></div>
     </dl>
 
+    <section id="model" aria-labelledby="model-h">
+      <h2 id="model-h">Inside one of my models</h2>
+      <p class="intro">The plumbing for two restroom groups in a single-level U.S. building, modelled in Revit with Autodesk Fabrication Parts and rebuilt here from the Navisworks export. It plays in install order: underground sanitary and storm first, then waste and vent above the slab, then the insulated cold and hot water and the fixtures.</p>
+      <figure class="model">
+        <div class="model-stage" id="model-stage" data-src="assets/models/plumbing">
+          <picture>
+            <source media="(max-width: 560px)" srcset="assets/img/model-poster-tall.jpg" width="716" height="895">
+            <img class="model-poster" src="assets/img/model-poster.jpg" width="1600" height="900" loading="lazy" decoding="async" alt="3D view of the plumbing model: a green below-grade sanitary main with branches under a translucent floor slab, ochre vent piping rising above it, blue cold water and red hot water lines with translucent insulation running overhead, and white fixtures along two restroom walls.">
+          </picture>
+        </div>
+        <div class="model-bar" id="model-bar" hidden>
+          <button type="button" class="chip" data-group="san" aria-pressed="true"><span class="chip-sw" style="--c:var(--san)"></span>Sanitary</button>
+          <button type="button" class="chip" data-group="vent" aria-pressed="true"><span class="chip-sw" style="--c:var(--vent)"></span>Vent</button>
+          <button type="button" class="chip" data-group="sd" aria-pressed="true"><span class="chip-sw" style="--c:var(--sd)"></span>Storm</button>
+          <button type="button" class="chip" data-group="cw" aria-pressed="true"><span class="chip-sw is-insulated" style="--c:var(--cw)"></span>Cold water</button>
+          <button type="button" class="chip" data-group="hw" aria-pressed="true"><span class="chip-sw is-insulated" style="--c:var(--hw)"></span>Hot water</button>
+          <button type="button" class="chip" data-group="fix" aria-pressed="true"><span class="chip-sw chip-sw-fix"></span>Fixtures</button>
+          <span class="model-tools">
+            <button type="button" class="chip chip-icon" data-zoom="out" aria-label="Zoom out">−</button>
+            <button type="button" class="chip chip-icon" data-zoom="in" aria-label="Zoom in">+</button>
+            <button type="button" class="chip" data-reset>Reset view</button>
+            <button type="button" class="chip chip-replay" data-replay>Replay</button>
+          </span>
+        </div>
+        <figcaption><span class="view-name">Restroom core, plumbing model</span><span class="view-scale" id="model-hint">Rebuilt from a Navisworks export</span></figcaption>
+      </figure>
+    </section>
+
     <section id="work" aria-labelledby="work-h">
       <h2 id="work-h">Selected work</h2>
-      <p class="intro">Client models stay confidential, so the drawings here are schematics I made to show the kind of problem each role involved.</p>
+      <p class="intro">The drawings in this section are schematics I made to show the kind of problem each role involved. Views from real models are in the project snapshots further down.</p>
       <div class="work">
         <article>
           
@@ -394,6 +459,44 @@
             <p class="tools-used"><strong>Tools:</strong> Revit MEP, Navisworks, AutoCAD, CADmep, Bluebeam</p>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-h">
+      <h2 id="projects-h">U.S. projects</h2>
+      <p class="intro">Snapshots from five U.S. projects I modelled as a BIM specialist with Autodesk Fabrication Parts: a mid-rise multifamily building, a parking garage, a residential tower, a temple and a meditation center. The portfolio has the scope, systems and deliverables for each one.</p>
+      <div class="shots">
+        <figure class="view shot">
+          <a class="view-frame" href="assets/img/projects/multifamily-restroom-3d.jpg"><img src="assets/img/projects/multifamily-restroom-3d.jpg" width="1031" height="677" loading="lazy" decoding="async" alt="Restroom piping in 3D: domestic water, sanitary and vent risers and branches serving a group of fixtures, with the floor slab and walls shown in outline."></a>
+          <figcaption><span class="view-name">Multifamily building: restroom piping in 3D</span><span class="view-scale">3D detail issued for field installation</span></figcaption>
+        </figure>
+        <figure class="view shot">
+          <a class="view-frame" href="assets/img/projects/multifamily-enlarged-plan.jpg"><img src="assets/img/projects/multifamily-enlarged-plan.jpg" width="1111" height="680" loading="lazy" decoding="async" alt="Enlarged plumbing plan of two restrooms with gridlines, dimensions and pipe tags giving size and bottom-of-pipe elevation."></a>
+          <figcaption><span class="view-name">Multifamily building: enlarged plan</span><span class="view-scale">Dimensions and pipe tags for the field</span></figcaption>
+        </figure>
+        <figure class="view shot">
+          <a class="view-frame" href="assets/img/projects/multifamily-water-heater-room.jpg"><img src="assets/img/projects/multifamily-water-heater-room.jpg" width="671" height="592" loading="lazy" decoding="async" alt="3D detail of a water heater room with tagged valves, a recirculating pump, a pressure reducing valve station and floor drains."></a>
+          <figcaption><span class="view-name">Multifamily building: water heater room</span><span class="view-scale">Tagged 3D detail</span></figcaption>
+        </figure>
+        <figure class="view shot">
+          <a class="view-frame" href="assets/img/projects/multifamily-sleeve-layout.jpg"><img src="assets/img/projects/multifamily-sleeve-layout.jpg" width="883" height="605" loading="lazy" decoding="async" alt="Sleeve layout plan for one section of Level 4, with the sleeves marked between the structural grid."></a>
+          <figcaption><span class="view-name">Multifamily building: sleeve layout, Level 4</span><span class="view-scale">Sleeve drawing with takeoff</span></figcaption>
+        </figure>
+        <figure class="view shot">
+          <a class="view-frame" href="assets/img/projects/temple-coordination-model.jpg"><img src="assets/img/projects/temple-coordination-model.jpg" width="1057" height="656" loading="lazy" decoding="async" alt="Coordination model of drain, waste and vent, domestic water and mechanical piping, modelled with hangers for installation."></a>
+          <figcaption><span class="view-name">Temple: coordination model</span><span class="view-scale">DWV, domestic water and mechanical piping with hangers</span></figcaption>
+        </figure>
+        <figure class="view shot">
+          <a class="view-frame" href="assets/img/projects/temple-clash-test.jpg"><img src="assets/img/projects/temple-clash-test.jpg" width="1400" height="775" loading="lazy" decoding="async" alt="Navisworks Clash Detective results for the plumbing water piping tested against the structural model, with the clashing slabs highlighted in red."></a>
+          <figcaption><span class="view-name">Temple: Navisworks clash test</span><span class="view-scale">Plumbing water piping against structure</span></figcaption>
+        </figure>
+        <figure class="view shot">
+          <a class="view-frame" href="assets/img/projects/meditation-center-federated.jpg"><img src="assets/img/projects/meditation-center-federated.jpg" width="1067" height="697" loading="lazy" decoding="async" alt="Federated Navisworks model of a single-level building, with the plumbing model coordinated against structure, ductwork and the other trades."></a>
+          <figcaption><span class="view-name">Meditation center: federated model</span><span class="view-scale">Plumbing coordinated with all trades</span></figcaption>
+        </figure>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="assets/docs/diego-rueda-portfolio.pdf">Download the portfolio (PDF, 1.9 MB)</a>
       </div>
     </section>
 
@@ -498,13 +601,14 @@
       <div class="actions">
         <a class="btn btn-primary" href="mailto:d.ruedaq@gmail.com">Email d.ruedaq@gmail.com</a>
       </div>
-      <p class="links"><a href="https://www.linkedin.com/in/diegoarueda/">LinkedIn</a><a href="https://github.com/dandrue">GitHub</a></p>
+      <p class="links"><a href="https://www.linkedin.com/in/diegoarueda/">LinkedIn</a><a href="assets/docs/diego-rueda-portfolio.pdf">Portfolio (PDF)</a><a href="https://github.com/dandrue">GitHub</a></p>
     </section>
   </main>
 
-  <footer>Diego Rueda, 2026. The drawings on this site are schematics; no client data is shown.</footer>
+  <footer>Diego Rueda, 2026. Model views and snapshots come from my own project work, with client names and locations left out.</footer>
 </div>
 <script type="importmap">{"imports": {"three": "./assets/js/three.module.min.js", "three/addons/": "./assets/js/"}}</script>
 <script type="module" src="assets/js/hero3d.js"></script>
+<script type="module" src="assets/js/model3d.js"></script>
 </body>
 </html>

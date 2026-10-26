@@ -374,11 +374,54 @@ def figure(svg, view_name, note_comment):
         </figure>"""
 
 
+# ------------------------------------------------- project snapshots (from the portfolio PDF)
+
+PROJECT_SHOTS = [
+    ("multifamily-restroom-3d", "Multifamily building: restroom piping in 3D",
+     "3D detail issued for field installation", "Restroom piping in 3D: domestic water, sanitary and vent risers "
+     "and branches serving a group of fixtures, with the floor slab and walls shown in outline."),
+    ("multifamily-enlarged-plan", "Multifamily building: enlarged plan",
+     "Dimensions and pipe tags for the field", "Enlarged plumbing plan of two restrooms with gridlines, dimensions "
+     "and pipe tags giving size and bottom-of-pipe elevation."),
+    ("multifamily-water-heater-room", "Multifamily building: water heater room",
+     "Tagged 3D detail", "3D detail of a water heater room with tagged valves, a recirculating pump, a pressure "
+     "reducing valve station and floor drains."),
+    ("multifamily-sleeve-layout", "Multifamily building: sleeve layout, Level 4",
+     "Sleeve drawing with takeoff", "Sleeve layout plan for one section of Level 4, with the sleeves marked "
+     "between the structural grid."),
+    ("temple-coordination-model", "Temple: coordination model",
+     "DWV, domestic water and mechanical piping with hangers", "Coordination model of drain, waste and vent, "
+     "domestic water and mechanical piping, modelled with hangers for installation."),
+    ("temple-clash-test", "Temple: Navisworks clash test",
+     "Plumbing water piping against structure", "Navisworks Clash Detective results for the plumbing water piping "
+     "tested against the structural model, with the clashing slabs highlighted in red."),
+    ("meditation-center-federated", "Meditation center: federated model",
+     "Plumbing coordinated with all trades", "Federated Navisworks model of a single-level building, with the "
+     "plumbing model coordinated against structure, ductwork and the other trades."),
+]
+
+
+def project_shots():
+    from PIL import Image  # only needed at build time
+    root = Path(__file__).resolve().parent.parent
+    out = []
+    for slug, name, note, alt in PROJECT_SHOTS:
+        rel = f"assets/img/projects/{slug}.jpg"
+        w, h = Image.open(root / rel).size
+        out.append(f"""
+        <figure class="view shot">
+          <a class="view-frame" href="{rel}"><img src="{rel}" width="{w}" height="{h}" loading="lazy" decoding="async" alt="{_html.escape(alt)}"></a>
+          <figcaption><span class="view-name">{_html.escape(name)}</span><span class="view-scale">{_html.escape(note)}</span></figcaption>
+        </figure>""")
+    return "".join(out)
+
+
 def build(out_dir: Path):
     tpl = (Path(__file__).parent / "template.html").read_text(encoding="utf-8")
     html = (tpl
             .replace("{{SERVICE_TOKENS}}", service_tokens())
             .replace("{{SERVICE_KEY}}", service_key())
+            .replace("{{PROJECT_SHOTS}}", project_shots())
             .replace("{{HERO_SVG}}", hero_svg())
             .replace("{{FIG_REROUTE}}", figure(reroute_svg(), "Cold water rerouted under a beam",
                                                 "Replace with a Navisworks clash view or Revit 3D view (client info removed)"))
