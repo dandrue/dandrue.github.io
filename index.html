@@ -229,6 +229,28 @@
   .slab-front { fill: var(--slab-front); stroke: #9AA9B2; stroke-width: 1; }
   .sleeve { stroke: #8494A0; stroke-width: 10; stroke-linecap: butt; fill: none; }
   .fixture { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.4; }
+  /* hero: water heater room */
+  .slab-see { fill-opacity: 0.72; }
+  .pipe.under { stroke-opacity: 0.75; }
+  .wall-face { fill: #EDF1F3; stroke: #B5C1C8; stroke-width: 1; }
+  .wall-back { fill: #E6EBEE; }
+  .wall-top { fill: #D7DFE4; stroke: #9AA9B2; stroke-width: 1; }
+  .wall-end { fill: #DCE3E7; stroke: #9AA9B2; stroke-width: 1; }
+  .fx { fill: #FBFCFD; stroke: var(--ink-2); stroke-width: 1.1; }
+  .fx-front { fill: #F1F4F6; }
+  .fx-side { fill: #E6EBEE; }
+  .fx-basin { fill: #E1E7EB; stroke: var(--ink-2); stroke-width: 0.8; }
+  .tank { stroke: var(--ink); stroke-width: 1.2; }
+  .drain { fill: #2A343B; stroke: #AEB8BF; stroke-width: 1.2; }
+  .vlv { fill: #5E6A72; stroke: #2A343B; stroke-width: 0.8; }
+  .vlv-bell { fill: #AEB8BF; }
+  .vlv-pump { fill: #3D6E9E; }
+  .vlv-tmv { fill: #AEB8BF; }
+  .vlv-rpz { fill: #C9A227; }
+  .vlv-stem { stroke: #5E6A72; stroke-width: 1.4; }
+  .vlv-wheel { fill: none; stroke: #B23A2E; stroke-width: 1.6; }
+  .pop { opacity: 0; animation: pop .35s ease-out forwards; animation-delay: var(--d, 0s); }
+  @keyframes pop { to { opacity: 1; } }
   .beam-top { fill: #BAC6CE; stroke: #7D8D98; stroke-width: 1; }
   .beam-side { fill: #A3B0B9; stroke: #7D8D98; stroke-width: 1; }
   .beam-front { fill: #AFBCC5; stroke: #7D8D98; stroke-width: 1; }
@@ -263,6 +285,7 @@
   .riser3d-labels { position: absolute; inset: 0; pointer-events: none; }
   .riser3d-label { position: absolute; left: 0; top: 0; translate: 10px -135%; white-space: nowrap; font-size: 14px; font-weight: 650; font-variation-settings: var(--narrow); color: var(--ink); opacity: 0; transition: opacity .5s ease; }
   .riser3d-label.is-level { translate: calc(-100% - 10px) -50%; font-size: 13px; }
+  .riser3d-label.is-left { translate: calc(-100% - 10px) -135%; }
   .labels-on .riser3d-label { opacity: 1; }
   .hero-hint { margin: 4px 0 0; text-align: right; font-size: 13px; color: var(--ink-2); font-variation-settings: var(--narrow); }
 
@@ -271,6 +294,7 @@
   @keyframes draw { to { stroke-dashoffset: 0; } }
   @media (prefers-reduced-motion: reduce) {
     .draw { animation: none; stroke-dashoffset: 0; stroke-dasharray: none; }
+    .pop { animation: none; opacity: 1; }
     .riser3d, .hero-art.is-3d > svg.riser, .riser3d-label, .model-poster, .model3d, .shot img { transition: none; }
     html { scroll-behavior: auto; }
   }
@@ -328,49 +352,68 @@
         </div>
       </div>
       <div class="hero-visual">
-        <div class="hero-art" id="hero-art"><svg class="riser" viewBox="0 0 560 520" role="img" aria-labelledby="riser-t riser-d" xmlns="http://www.w3.org/2000/svg"><title id="riser-t">Isometric plumbing riser diagram</title><desc id="riser-d">Cold water, hot water, sanitary and vent risers rising through two floor slabs, with sleeves where each pipe crosses a slab and branches to a fixture on level 2.</desc><path d="M275.5,385.8 L275.5,350.4" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0s"/><path d="M275.5,385.8 L275.5,350.4" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0s"/>
-<path d="M293.5,396.2 L293.5,360.8" stroke="var(--hw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.15s"/><path d="M293.5,396.2 L293.5,360.8" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.15s"/>
-<path d="M347.6,427.4 L347.6,392.0" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.3s"/>
-<polygon class="slab-top" points="262.0,300.0 451.1,409.2 316.0,487.2 126.9,378.0" /><polygon class="slab-front" points="126.9,378.0 316.0,487.2 316.0,498.6 126.9,389.4" /><polygon class="slab-side" points="451.1,409.2 316.0,487.2 316.0,498.6 451.1,420.6" />
-<path d="M275.5,353.6 L275.5,331.7" class="sleeve"/>
-<path d="M293.5,364.0 L293.5,342.1" class="sleeve"/>
-<path d="M347.6,395.2 L347.6,373.3" class="sleeve"/>
-<path d="M275.5,350.4 L275.5,194.4" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.35s"/><path d="M275.5,350.4 L275.5,194.4" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.35s"/>
-<path d="M293.5,360.8 L293.5,204.8" stroke="var(--hw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.5s"/><path d="M293.5,360.8 L293.5,204.8" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.5s"/>
-<path d="M347.6,392.0 L347.6,236.0" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.6499999999999999s"/>
-<path d="M370.1,320.8 L370.1,249.0" stroke="var(--vent)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.7999999999999999s"/>
-<path d="M347.6,333.8 L370.1,320.8" stroke="var(--vent)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.95s"/>
-<path d="M275.5,297.4 L217.0,331.2 L253.0,352.0" stroke="var(--cw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.9s"/><path d="M275.5,297.4 L217.0,331.2 L253.0,352.0" stroke="var(--cw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:0.9s"/>
-<path d="M293.5,318.2 L248.5,344.2 L266.5,354.6" stroke="var(--hw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.0s"/><path d="M293.5,318.2 L248.5,344.2 L266.5,354.6" stroke="var(--hw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.0s"/>
-<path d="M347.6,248.0 L266.5,294.8 L266.5,282.8" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.1s"/>
-<polygon class="slab-top" points="262.0,144.0 451.1,253.2 316.0,331.2 126.9,222.0" /><polygon class="slab-front" points="126.9,222.0 316.0,331.2 316.0,342.6 126.9,233.4" /><polygon class="slab-side" points="451.1,253.2 316.0,331.2 316.0,342.6 451.1,264.6" />
-<path d="M275.5,197.6 L275.5,175.7" class="sleeve"/>
-<path d="M293.5,208.0 L293.5,186.1" class="sleeve"/>
-<path d="M347.6,239.2 L347.6,217.3" class="sleeve"/>
-<path d="M370.1,252.2 L370.1,230.3" class="sleeve"/>
-<path d="M266.5,286.0 L266.5,264.1" class="sleeve"/>
-<path d="M275.5,194.4 L275.5,47.8" stroke="var(--cw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.8s"/><path d="M275.5,194.4 L275.5,47.8" stroke="var(--cw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.8s"/>
-<path d="M293.5,204.8 L293.5,79.0" stroke="var(--hw)" stroke-width="9.5" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:0.9500000000000001s"/><path d="M293.5,204.8 L293.5,79.0" stroke="var(--hw)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:0.9500000000000001s"/>
-<path d="M347.6,236.0 L347.6,141.4" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.1s"/>
-<path d="M370.1,249.0 L370.1,81.6" stroke="var(--vent)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.25s"/>
-<path d="M266.5,282.8 L266.5,253.2" stroke="var(--san)" stroke-width="3.4" pathLength="1" class="pipe draw" style="--d:1.3s"/>
-<path d="M275.5,136.2 L194.5,183.0 L248.5,214.2 L248.5,235.0" stroke="var(--cw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.4s"/><path d="M275.5,136.2 L194.5,183.0 L248.5,214.2 L248.5,235.0" stroke="var(--cw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.4s"/>
-<path d="M293.5,159.6 L226.0,198.6 L262.0,219.4 L262.0,232.4" stroke="var(--hw)" stroke-width="8.4" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.5s"/><path d="M293.5,159.6 L226.0,198.6 L262.0,219.4 L262.0,232.4" stroke="var(--hw)" stroke-width="3" pathLength="1" class="pipe draw" style="--d:1.5s"/>
-<ellipse cx="260.6" cy="243.1" rx="17" ry="9" class="fixture"/>
-<path d="M275.5,47.8 l10,-8 h6" class="leader"/>
-<text x="294.5" y="43.8" class="lbl lbl-pipe" text-anchor="start" >2" CW</text>
-<path d="M293.5,79.0 l10,-8 h6" class="leader"/>
-<text x="312.5" y="75.0" class="lbl lbl-pipe" text-anchor="start" >1-1/2" HW</text>
-<path d="M347.6,141.4 l10,-8 h6" class="leader"/>
-<text x="366.6" y="137.4" class="lbl lbl-pipe" text-anchor="start" >4" SAN</text>
-<path d="M370.1,81.6 l10,-8 h6" class="leader"/>
-<text x="389.1" y="77.6" class="lbl lbl-pipe" text-anchor="start" >2" V</text>
-<path d="M118.9,378.0 H18" class="level-line"/>
-<text x="18.0" y="371.0" class="lbl lbl-level" text-anchor="start" >Level 1</text>
-<path d="M118.9,222.0 H18" class="level-line"/>
-<text x="18.0" y="215.0" class="lbl lbl-level" text-anchor="start" >Level 2</text>
-<path d="M272.5,272.8 l46,26 h40" class="leader"/>
-<text x="362.5" y="302.8" class="lbl" text-anchor="start" >Sleeve through slab</text></svg></div>
+        <div class="hero-art" id="hero-art"><svg class="riser" viewBox="0 0 560 520" role="img" aria-labelledby="riser-t riser-d" xmlns="http://www.w3.org/2000/svg"><title id="riser-t">Isometric view of a water heater room</title><desc id="riser-d">A residential water heater room: a 3 inch cold water main enters through the wall and drops to a pressure reducing valve station, a 1 inch branch feeds the electric water heater, hot water leaves through a mixing valve with a recirculating return and pump, an irrigation line runs through a backflow preventer, and a mop sink and two floor drains connect to sanitary piping below the slab.</desc><path d="M371.8,477.3 L201.5,379.0" stroke="var(--san)" stroke-width="7.392419044310064" pathLength="1" class="pipe under draw" style="--d:0s"/>
+<path d="M310.3,441.8 L331.6,418.6 L331.6,399.0" stroke="var(--san)" stroke-width="5.686476187930818" pathLength="1" class="pipe under draw" style="--d:0.406s"/>
+<path d="M270.1,418.6 L362.3,354.4 L362.3,334.8" stroke="var(--san)" stroke-width="5.686476187930818" pathLength="1" class="pipe under draw" style="--d:0.672s"/>
+<path d="M220.4,389.9 L244.1,365.4 L244.1,345.7" stroke="var(--san)" stroke-width="5.686476187930818" pathLength="1" class="pipe under draw" style="--d:1.0s"/>
+<path d="M362.3,354.4 L384.5,341.6 L401.1,351.2 L401.1,341.3" stroke="var(--vent)" stroke-width="4.549180950344655" pathLength="1" class="pipe under draw" style="--d:1.284s"/>
+<polygon class="slab-front" points="105.0,314.0 319.7,438.0 319.7,451.1 105.0,327.1" />
+<polygon class="slab-side" points="468.3,352.3 319.7,438.0 319.7,451.1 468.3,365.4" />
+<polygon class="slab-top slab-see" points="253.5,228.3 468.3,352.3 319.7,438.0 105.0,314.0" />
+<path d="M371.8,477.3 L342.0,460.1" stroke="var(--san)" stroke-width="7.392419044310064" pathLength="1" class="pipe draw" style="--d:0s"/>
+<polygon class="wall-face" points="253.5,235.9 111.6,317.8 111.6,137.6 253.5,55.6" />
+<polygon class="wall-face wall-back" points="253.5,235.9 461.7,356.1 461.7,175.8 253.5,55.6" />
+<polygon class="wall-top" points="253.5,48.0 260.1,51.8 111.6,137.6 105.0,133.8" />
+<polygon class="wall-top" points="253.5,48.0 468.3,172.0 461.7,175.8 253.5,55.6" />
+<polygon class="wall-end" points="105.0,314.0 111.6,317.8 111.6,137.6 105.0,133.8" />
+<polygon class="wall-end" points="468.3,352.3 461.7,356.1 461.7,175.8 468.3,172.0" />
+<path d="M227.5,80.5 L238.4,86.8" class="sleeve" style="stroke-width:11.4"/>
+<path d="M245.9,91.2 L245.9,203.1" stroke="var(--cw)" stroke-width="9.6" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.278s"/><path d="M245.9,91.2 L245.9,203.1" stroke="var(--cw)" stroke-width="3.4118857127584907" pathLength="1" class="pipe draw" style="--d:1.278s"/>
+<g class="pop" style="--d:1.45s"><circle cx="245.9" cy="121.2" r="3.2" class="vlv"/></g>
+<g class="pop" style="--d:2.128s"><rect x="206.5" y="217.9" width="15.6" height="7.1" rx="3.2" class="vlv vlv-rpz" transform="rotate(-30 214.2 221.4)"/></g>
+<path d="M243.1,112.5 L243.1,126.1" stroke="var(--cw)" stroke-width="8.0" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.522s"/><path d="M243.1,112.5 L243.1,126.1" stroke="var(--cw)" stroke-width="2.843238093965409" pathLength="1" class="pipe draw" style="--d:1.522s"/>
+<g class="pop" style="--d:1.622s"><path d="M234.4,126.1 L234.4,150.7 A8.7,5.0 0 0 0 251.8,150.7 L251.8,126.1" class="fx tank"/><path d="M234.4,126.1 A8.7,5.4 0 0 1 251.8,126.1 A8.7,5.0 0 0 1 234.4,126.1" class="fx tank"/></g>
+<path d="M263.0,101.0 L220.9,125.3" stroke="var(--cw)" stroke-width="11.1" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.391s"/><path d="M263.0,101.0 L220.9,125.3" stroke="var(--cw)" stroke-width="3.9805333315515727" pathLength="1" class="pipe draw" style="--d:1.391s"/>
+<path d="M226.5,80.0 L342.0,146.6" stroke="var(--cw)" stroke-width="20.7" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M226.5,80.0 L342.0,146.6" stroke="var(--cw)" stroke-width="7.392419044310064" pathLength="1" class="pipe draw" style="--d:1.15s"/>
+<path d="M245.9,203.1 L145.7,261.0" stroke="var(--cw)" stroke-width="9.6" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.278s"/><path d="M245.9,203.1 L145.7,261.0" stroke="var(--cw)" stroke-width="3.4118857127584907" pathLength="1" class="pipe draw" style="--d:1.278s"/>
+<path d="M220.9,125.3 L220.9,178.3" stroke="var(--cw)" stroke-width="11.1" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.391s"/><path d="M220.9,125.3 L220.9,178.3" stroke="var(--cw)" stroke-width="3.9805333315515727" pathLength="1" class="pipe draw" style="--d:1.391s"/>
+<g class="pop" style="--d:1.772s"><circle cx="220.9" cy="143.3" r="3.8" class="vlv"/></g>
+<path d="M220.9,156.4 L240.7,167.9" stroke="var(--cw)" stroke-width="8.0" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.847s"/><path d="M220.9,156.4 L240.7,167.9" stroke="var(--cw)" stroke-width="2.843238093965409" pathLength="1" class="pipe draw" style="--d:1.847s"/>
+<g class="pop" style="--d:1.972s"><path d="M190.3,194.9 L190.3,298.2 A30.1,17.4 0 0 0 250.5,298.2 L250.5,194.9" class="fx tank"/><path d="M190.3,194.9 A30.1,18.7 0 0 1 250.5,194.9 A30.1,17.4 0 0 1 190.3,194.9" class="fx tank"/></g>
+<path d="M240.7,167.9 L229.9,174.2" stroke="var(--cw)" stroke-width="8.0" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.847s"/><path d="M240.7,167.9 L229.9,174.2" stroke="var(--cw)" stroke-width="2.843238093965409" pathLength="1" class="pipe draw" style="--d:1.847s"/>
+<path d="M127.2,250.4 L138.1,256.7" class="sleeve" style="stroke-width:7.4"/>
+<path d="M145.7,261.0 L126.3,249.8" stroke="var(--cw)" stroke-width="9.6" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.278s"/><path d="M145.7,261.0 L126.3,249.8" stroke="var(--cw)" stroke-width="3.4118857127584907" pathLength="1" class="pipe draw" style="--d:1.278s"/>
+<path d="M229.9,198.8 L229.9,126.7" stroke="var(--hw)" stroke-width="11.1" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:2.522s"/><path d="M229.9,198.8 L229.9,126.7" stroke="var(--hw)" stroke-width="3.9805333315515727" pathLength="1" class="pipe draw" style="--d:2.522s"/>
+<path d="M342.0,146.6 L342.0,228.5" stroke="var(--cw)" stroke-width="20.7" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M342.0,146.6 L342.0,228.5" stroke="var(--cw)" stroke-width="7.392419044310064" pathLength="1" class="pipe draw" style="--d:1.15s"/>
+<g class="pop" style="--d:2.647s"><rect x="224.9" y="172.0" width="9.8" height="9.8" rx="2" class="vlv vlv-tmv"/></g>
+<path d="M250.2,264.0 L241.7,259.1" stroke="var(--hwr)" stroke-width="9.6" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:2.809s"/><path d="M250.2,264.0 L241.7,259.1" stroke="var(--hwr)" stroke-width="3.4118857127584907" pathLength="1" class="pipe draw" style="--d:2.809s"/>
+<path d="M250.2,138.4 L250.2,264.0" stroke="var(--hwr)" stroke-width="9.6" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:2.809s"/><path d="M250.2,138.4 L250.2,264.0" stroke="var(--hwr)" stroke-width="3.4118857127584907" pathLength="1" class="pipe draw" style="--d:2.809s"/>
+<g class="pop" style="--d:3.122s"><circle cx="250.2" cy="193.0" r="4.9" class="vlv vlv-pump"/><rect x="252.1" y="190.1" width="9.7" height="5.8" rx="2" class="vlv vlv-pump"/></g>
+<g class="pop" style="--d:3.309s"><circle cx="250.2" cy="225.8" r="3.2" class="vlv"/></g>
+<g class="pop" style="--d:2.537s"><line x1="365.6" y1="242.2" x2="365.6" y2="219.7" class="vlv-stem"/><circle cx="365.6" cy="242.2" r="8.8" class="vlv"/><ellipse cx="365.6" cy="219.7" rx="12.6" ry="5.6" class="vlv-wheel"/></g>
+<path d="M401.1,331.5 L401.1,322.8" class="sleeve" style="stroke-width:8.5"/>
+<path d="M401.1,341.3 L401.1,148.0" stroke="var(--vent)" stroke-width="4.549180950344655" pathLength="1" class="pipe draw" style="--d:1.597s"/>
+<ellipse cx="244.1" cy="342.1" rx="10.0" ry="5.8" class="drain pop" style="--d:1.281s"/>
+<g class="pop" style="--d:1.397s"><polygon class="fx fx-front" points="322.1,307.2 364.7,331.8 364.7,354.7 322.1,330.1" /><polygon class="fx fx-side" points="402.5,309.9 364.7,331.8 364.7,354.7 402.5,332.9" /><polygon class="fx" points="359.9,285.3 402.5,309.9 364.7,331.8 322.1,307.2" /><polygon class="fx-basin" points="359.9,290.8 393.1,309.9 364.7,326.3 331.6,307.2" /></g>
+<path d="M342.0,228.5 L427.1,277.7" stroke="var(--cw)" stroke-width="20.7" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M342.0,228.5 L427.1,277.7" stroke="var(--cw)" stroke-width="7.392419044310064" pathLength="1" class="pipe draw" style="--d:1.15s"/>
+<g class="pop" style="--d:2.694s"><circle cx="389.3" cy="255.8" r="9.8" class="vlv"/><path d="M382.3,247.4 L378.0,230.6 H400.5 L396.3,247.4 Z" class="vlv vlv-bell"/></g>
+<g class="pop" style="--d:2.85s"><line x1="412.9" y1="269.5" x2="412.9" y2="247.0" class="vlv-stem"/><circle cx="412.9" cy="269.5" r="8.8" class="vlv"/><ellipse cx="412.9" cy="247.0" rx="12.6" ry="5.6" class="vlv-wheel"/></g>
+<path d="M427.1,277.7 L427.1,176.6" stroke="var(--cw)" stroke-width="20.7" stroke-opacity="0.2" pathLength="1" class="pipe draw" style="--d:1.15s"/><path d="M427.1,277.7 L427.1,176.6" stroke="var(--cw)" stroke-width="7.392419044310064" pathLength="1" class="pipe draw" style="--d:1.15s"/>
+<ellipse cx="331.6" cy="395.4" rx="11.4" ry="6.6" class="drain pop" style="--d:0.673s"/>
+<path d="M427.1,176.6 l10,-8 h6" class="leader"/>
+<text x="446.1" y="172.6" class="lbl lbl-pipe" text-anchor="start" >3" CW</text>
+<path d="M389.3,246.6 l10,-8 h6" class="leader"/>
+<text x="408.3" y="242.6" class="lbl lbl-pipe" text-anchor="start" >3" PRV</text>
+<path d="M201.5,225.0 l-10,-8 h-6" class="leader"/>
+<text x="182.5" y="221.0" class="lbl lbl-pipe" text-anchor="end" >EWH-1</text>
+<path d="M229.9,126.7 l-10,-8 h-6" class="leader"/>
+<text x="210.9" y="122.7" class="lbl lbl-pipe" text-anchor="end" >HW</text>
+<path d="M250.2,138.4 l10,-8 h6" class="leader"/>
+<text x="269.2" y="134.4" class="lbl lbl-pipe" text-anchor="start" >HWR</text>
+<path d="M331.6,395.7 l10,-8 h6" class="leader"/>
+<text x="350.6" y="391.7" class="lbl lbl-pipe" text-anchor="start" >FD</text>
+<path d="M103.6,317.8 H18" class="level-line"/>
+<text x="18.0" y="310.8" class="lbl lbl-level" text-anchor="start" >Level 2</text></svg></div>
         <p class="hero-hint" id="hero-hint" hidden>Drag to rotate the model</p>
       </div>
     </div>

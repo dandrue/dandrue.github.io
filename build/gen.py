@@ -91,83 +91,14 @@ def box_faces(p, x0, x1, y0, y1, z0, z1, cls_top, cls_side, cls_front):
     return poly(top, cls_top) + poly(front_y, cls_front) + poly(side_x, cls_side)
 
 
-# ---------------------------------------------------------------- hero riser
+# ---------------------------------------------------------------- hero: water heater room
+
+sys.path.insert(0, str(Path(__file__).parent))
+import hero_scene  # noqa: E402
+
 
 def hero_svg():
-    p = iso(262, 300, 52)
-    out = []
-    t = 0.22
-    X0, X1, Y0, Y1 = 0, 4.2, 0, 3.0
-    risers = [  # name, x, y, bottom, top, color, size label
-        ("CW", 0.9, 0.6, -0.9, 5.6, C["cw"], '2" CW'),
-        ("HW", 1.3, 0.6, -0.9, 5.2, C["hw"], '1-1/2" HW'),
-        ("SAN", 2.5, 0.6, -0.9, 4.6, C["san"], '4" SAN'),
-        ("V", 3.0, 0.6, 1.4, 6.0, C["vent"], '2" V'),
-    ]
-
-    def slab(z):
-        return box_faces(p, X0, X1, Y0, Y1, z - t, z, "slab-top", "slab-side", "slab-front")
-
-    def sleeve(x, y, z):
-        a, b = p(x, y, z - t - 0.06), p(x, y, z + 0.14)
-        return f'<path d="M{fmt(a)} L{fmt(b)}" class="sleeve"/>'
-
-    # 1. everything below level 1 slab
-    for i, (_, x, y, zb, zt, col, _) in enumerate(risers):
-        if zb < -t:
-            out.append(pipe([p(x, y, zb), p(x, y, -t)], col, delay=0.15 * i))
-    out.append(slab(0))
-    for _, x, y, zb, zt, col, _ in risers:
-        if zb < 0:
-            out.append(sleeve(x, y, 0))
-    # 2. between the slabs
-    for i, (_, x, y, zb, zt, col, _) in enumerate(risers):
-        out.append(pipe([p(x, y, max(zb, -t)), p(x, y, 3 - t)], col, delay=0.35 + 0.15 * i))
-    # vent stack ties into the sanitary stack on a 45
-    out.append(pipe([p(2.5, 0.6, 0.9), p(3.0, 0.6, 1.4)], C["vent"], 3.4, delay=0.95))
-    # level 1 branches
-    out.append(pipe([p(0.9, 0.6, 0.8), p(0.9, 1.9, 0.8), p(1.7, 1.9, 0.8)], C["cw"], 3, delay=0.9))
-    out.append(pipe([p(1.3, 0.6, 0.6), p(1.3, 1.6, 0.6), p(1.7, 1.6, 0.6)], C["hw"], 3, delay=1.0))
-    # level 2 sanitary branch hangs under the slab, then rises through it
-    out.append(pipe([p(2.5, 0.6, 2.55), p(2.5, 2.4, 2.55), p(2.5, 2.4, 3 - t)], C["san"], 3.4, delay=1.1))
-    out.append(slab(3))
-    for _, x, y, zb, zt, col, _ in risers:
-        out.append(sleeve(x, y, 3))
-    out.append(sleeve(2.5, 2.4, 3))
-    # 3. above level 2
-    for i, (_, x, y, zb, zt, col, _) in enumerate(risers):
-        out.append(pipe([p(x, y, 3 - t), p(x, y, zt)], col, delay=0.8 + 0.15 * i))
-    out.append(pipe([p(2.5, 2.4, 3 - t), p(2.5, 2.4, 3.35)], C["san"], 3.4, delay=1.3))
-    out.append(pipe([p(0.9, 0.6, 3.9), p(0.9, 2.4, 3.9), p(2.1, 2.4, 3.9), p(2.1, 2.4, 3.5)], C["cw"], 3, delay=1.4))
-    out.append(pipe([p(1.3, 0.6, 3.65), p(1.3, 2.1, 3.65), p(2.1, 2.1, 3.65), p(2.1, 2.1, 3.4)], C["hw"], 3, delay=1.5))
-    # fixture symbol at the end of the level 2 branches
-    fx = p(2.27, 2.3, 3.38)
-    out.append(f'<ellipse cx="{fx[0]:.1f}" cy="{fx[1]:.1f}" rx="17" ry="9" class="fixture"/>')
-
-    # labels at the top of each riser
-    for _, x, y, zb, zt, col, lab in risers:
-        q = p(x, y, zt)
-        out.append(f'<path d="M{fmt(q)} l10,-8 h6" class="leader"/>')
-        out.append(text(q[0] + 19, q[1] - 4, lab, "lbl lbl-pipe"))
-    # level lines
-    for z, name in ((0, "Level 1"), (3, "Level 2")):
-        a = p(X0, Y1, z)
-        out.append(f'<path d="M{a[0]-8:.1f},{a[1]:.1f} H18" class="level-line"/>')
-        out.append(text(18, a[1] - 7, name, "lbl lbl-level"))
-    # one sleeve callout
-    s = p(2.5, 2.4, 3.05)
-    out.append(f'<path d="M{s[0]+6:.1f},{s[1]+4:.1f} l46,26 h40" class="leader"/>')
-    out.append(text(s[0] + 96, s[1] + 34, 'Sleeve through slab', "lbl"))
-
-    body = "\n".join(out)
-    return (
-        '<svg class="riser" viewBox="0 0 560 520" role="img" aria-labelledby="riser-t riser-d" '
-        'xmlns="http://www.w3.org/2000/svg">'
-        '<title id="riser-t">Isometric plumbing riser diagram</title>'
-        '<desc id="riser-d">Cold water, hot water, sanitary and vent risers rising through two '
-        'floor slabs, with sleeves where each pipe crosses a slab and branches to a fixture on level 2.</desc>'
-        f"{body}</svg>"
-    )
+    return hero_scene.hero_svg(C, pipe, text, poly, fmt)
 
 
 # --------------------------------------------------- work: reroute around beam
@@ -431,7 +362,8 @@ def build(out_dir: Path):
     js_dir = out_dir / "assets" / "js"
     js_dir.mkdir(parents=True, exist_ok=True)
     (js_dir / "services.js").write_text(services_js(), encoding="utf-8")
-    print("wrote", js_dir / "services.js")
+    (js_dir / "hero-scene.js").write_text(hero_scene.scene_js(), encoding="utf-8")
+    print("wrote", js_dir / "services.js", "and hero-scene.js")
 
 
 if __name__ == "__main__":
