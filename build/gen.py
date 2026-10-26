@@ -374,30 +374,21 @@ def figure(svg, view_name, note_comment):
         </figure>"""
 
 
-# ------------------------------------------------- project snapshots (from the portfolio PDF)
+# ------------------------------------------------- residential project snapshots
 
 PROJECT_SHOTS = [
-    ("multifamily-restroom-3d", "Multifamily building: restroom piping in 3D",
+    ("multifamily-restroom-3d", "Restroom piping in 3D",
      "3D detail issued for field installation", "Restroom piping in 3D: domestic water, sanitary and vent risers "
      "and branches serving a group of fixtures, with the floor slab and walls shown in outline."),
-    ("multifamily-enlarged-plan", "Multifamily building: enlarged plan",
+    ("multifamily-enlarged-plan", "Enlarged plan of the restrooms",
      "Dimensions and pipe tags for the field", "Enlarged plumbing plan of two restrooms with gridlines, dimensions "
      "and pipe tags giving size and bottom-of-pipe elevation."),
-    ("multifamily-water-heater-room", "Multifamily building: water heater room",
+    ("multifamily-water-heater-room", "Water heater room",
      "Tagged 3D detail", "3D detail of a water heater room with tagged valves, a recirculating pump, a pressure "
      "reducing valve station and floor drains."),
-    ("multifamily-sleeve-layout", "Multifamily building: sleeve layout, Level 4",
+    ("multifamily-sleeve-layout", "Sleeve layout, Level 4",
      "Sleeve drawing with takeoff", "Sleeve layout plan for one section of Level 4, with the sleeves marked "
      "between the structural grid."),
-    ("temple-coordination-model", "Temple: coordination model",
-     "DWV, domestic water and mechanical piping with hangers", "Coordination model of drain, waste and vent, "
-     "domestic water and mechanical piping, modelled with hangers for installation."),
-    ("temple-clash-test", "Temple: Navisworks clash test",
-     "Plumbing water piping against structure", "Navisworks Clash Detective results for the plumbing water piping "
-     "tested against the structural model, with the clashing slabs highlighted in red."),
-    ("meditation-center-federated", "Meditation center: federated model",
-     "Plumbing coordinated with all trades", "Federated Navisworks model of a single-level building, with the "
-     "plumbing model coordinated against structure, ductwork and the other trades."),
 ]
 
 
