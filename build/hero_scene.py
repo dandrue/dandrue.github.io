@@ -18,26 +18,32 @@ SLAB = (-0.24, 0.0)
 # ----------------------------------------------------------------- runs
 # id: (service, radius, points, start)  start = number (seconds) or ("run_id", point) to tee off another run
 RUNS = {
-    "san_main": ("san", 0.065, [(5.05, 2.55, -0.62), (1.45, 2.55, -0.62)], 0.0),
-    "san_fd5": ("san", 0.05, [(3.75, 2.55, -0.62), (3.75, 2.1, -0.42), (3.75, 2.1, -0.06)], ("san_main", (3.75, 2.55, -0.62))),
-    "san_sink": ("san", 0.05, [(2.9, 2.55, -0.62), (2.9, 0.6, -0.42), (2.9, 0.6, -0.06)], ("san_main", (2.9, 2.55, -0.62))),
-    "san_fd1": ("san", 0.05, [(1.85, 2.55, -0.62), (1.85, 2.05, -0.42), (1.85, 2.05, -0.06)], ("san_main", (1.85, 2.55, -0.62))),
-    "vent_ug": ("vent", 0.04, [(2.9, 0.6, -0.42), (2.9, 0.13, -0.42), (3.25, 0.13, -0.42), (3.25, 0.13, -0.24)], ("san_sink", (2.9, 0.6, -0.42))),
-    "vent": ("vent", 0.04, [(3.25, 0.13, -0.24), (3.25, 0.13, H)], ("vent_ug", (3.25, 0.13, -0.24))),
+    # DWV below the slab, as in the source detail: the mop sink (FD-1) and the 3" floor drain FD-5 each
+    # have a P-trap under the slab; their trap arms join one line that runs to the stack at the front-left
+    # corner, and the vent rises from that line downstream of both traps.
+    "san_stack": ("san", 0.065, [(0.4, 2.75, -1.05), (0.4, 2.75, -0.6)], 0.0),
+    "san_main": ("san", 0.065, [(0.4, 2.75, -0.6), (0.4, 2.15, -0.57), (1.99, 2.15, -0.43)], ("san_stack", (0.4, 2.75, -0.6))),
+    "san_fd5": ("san", 0.065, [(1.99, 2.15, -0.43), (1.99, 2.15, -0.56), (2.15, 2.15, -0.56), (2.15, 2.15, -0.06)], ("san_main", (1.99, 2.15, -0.43))),
+    "san_sink": ("san", 0.05, [(1.15, 2.15, -0.51), (1.8, 1.5, -0.46), (1.8, 0.66, -0.42), (1.8, 0.66, -0.55), (1.8, 0.5, -0.55), (1.8, 0.5, -0.24)], ("san_main", (1.15, 2.15, -0.51))),
+    "san_tail": ("san", 0.04, [(1.8, 0.5, -0.24), (1.8, 0.5, 0.45)], ("san_sink", (1.8, 0.5, -0.24))),
+    "vent_ug": ("vent", 0.045, [(0.4, 2.75, -0.6), (0.4, 2.75, -0.24)], ("san_fd5", (2.15, 2.15, -0.06))),
+    "vent": ("vent", 0.045, [(0.4, 2.75, -0.24), (0.4, 2.75, H)], ("vent_ug", (0.4, 2.75, -0.24))),
     "cw_main": ("cw", 0.065, [(-WALL - 0.05, 0.38, 2.95), (2.25, 0.38, 2.95), (2.25, 0.38, 1.45), (4.05, 0.38, 1.45), (4.05, 0.38, H)], 1.15),
-    "cw_irr": ("cw", 0.03, [(0.22, 0.38, 2.95), (0.22, 0.38, 0.9), (0.22, 2.5, 0.9), (-WALL - 0.05, 2.5, 0.9)], ("cw_main", (0.22, 0.38, 2.95))),
+    # 1" irrigation supply drops in front of the heater, through a globe valve to the RPZ near the floor
+    "cw_irr": ("cw", 0.03, [(0.22, 0.38, 2.95), (0.22, 2.35, 2.95), (0.22, 2.35, 0.7), (0.22, 1.75, 0.7), (-WALL - 0.05, 1.75, 0.7)], ("cw_main", (0.22, 0.38, 2.95))),
     "cw_heater": ("cw", 0.035, [(0.58, 0.38, 2.95), (0.58, 1.27, 2.95), (0.58, 1.27, 1.98)], ("cw_main", (0.58, 0.38, 2.95))),
     "cw_exp": ("cw", 0.025, [(0.58, 0.8, 2.95), (0.58, 0.8, 2.7)], ("cw_heater", (0.58, 0.8, 2.95))),
     "cw_tmv": ("cw", 0.025, [(0.58, 1.27, 2.38), (1.0, 1.27, 2.38), (1.0, 1.5, 2.38)], ("cw_heater", (0.58, 1.27, 2.38))),
     "hw": ("hw", 0.035, [(1.05, 1.55, 1.98), (1.05, 1.55, H)], "heater"),
     "hwr": ("hwr", 0.03, [(1.48, 1.55, H), (1.48, 1.55, 1.0), (1.3, 1.55, 1.0)], ("hw", (1.05, 1.55, 2.9))),
 }
-UNDER = {"san_main", "san_fd5", "san_sink", "san_fd1", "vent_ug"}
+UNDER = {"san_stack", "san_main", "san_fd5", "san_sink", "vent_ug"}
 
 HEATER = dict(c=(0.85, 1.55), r=0.45, z0=0.06, z1=1.95)
 EXP_TANK = dict(c=(0.58, 0.8), r=0.13, z0=2.25, z1=2.7)
-SINK = dict(x0=2.45, x1=3.35, y0=0.2, y1=1.0, z0=0.0, z1=0.42)
-DRAINS = [dict(at=(3.75, 2.1), r=0.17, run="san_fd5"), dict(at=(1.85, 2.05), r=0.15, run="san_fd1")]
+SINK = dict(x0=1.4, x1=2.2, y0=0.12, y1=0.9, z0=0.45, z1=0.82)  # wall-hung mop sink on the back wall, drain FD-1
+SINK_RUN = "san_tail"
+DRAINS = [dict(at=(2.15, 2.15), r=0.17, run="san_fd5")]           # 3" FD-5 in front of the sink
 
 # valves: (kind, run, point, axis)
 VALVES = [
@@ -45,25 +51,27 @@ VALVES = [
     ("prv", "cw_main", (3.25, 0.38, 1.45), "x"),
     ("globe", "cw_main", (3.75, 0.38, 1.45), "x"),
     ("ball", "cw_heater", (0.58, 1.27, 2.62), "z"),
-    ("rpz", "cw_irr", (0.22, 1.05, 0.9), "y"),
-    ("ball", "cw_irr", (0.22, 0.38, 2.4), "z"),
+    ("globe", "cw_irr", (0.22, 2.35, 1.5), "z"),
+    ("rpz", "cw_irr", (0.22, 2.05, 0.7), "y"),
     ("tmv", "hw", (1.05, 1.55, 2.38), "z"),
     ("pump", "hwr", (1.48, 1.55, 2.3), "z"),
     ("check", "hwr", (1.48, 1.55, 1.7), "z"),
 ]
 SLEEVES = [  # through the slab (z) and the left wall (x)
-    ("z", (3.25, 0.13, 0.0), 0.04, "vent"),
-    ("x", (-WALL / 2, 0.38, 2.95), 0.065, "cw"), ("x", (-WALL / 2, 2.5, 0.9), 0.03, "cw"),
+    ("z", (0.4, 2.75, 0.0), 0.045, "vent"),
+    ("x", (-WALL / 2, 0.38, 2.95), 0.065, "cw"), ("x", (-WALL / 2, 1.75, 0.7), 0.03, "cw"),
 ]
 HANGERS = [((1.0, 0.38, 2.95), 0.065, "cw"), ((1.75, 0.38, 2.95), 0.065, "cw")]
 
 LABELS = [  # full, short, point, side
     ('3" CW', "CW", (4.05, 0.38, H), "right"),
     ('3" PRV', "PRV", (3.25, 0.38, 1.62), "right"),
-    ("EWH-1", "EWH", (0.85, 1.95, 1.6), "left"),
+    ("EWH-1", "EWH", (1.2, 1.85, 1.25), "right"),
     ("HW", "HW", (1.05, 1.55, H), "left"),
     ("HWR", "HWR", (1.48, 1.55, H), "right"),
-    ("FD", "FD", (3.75, 2.1, 0.0), "right"),
+    ('2" V', "V", (0.4, 2.75, H), "left"),
+    ("FD-1", "FD-1", (2.2, 0.9, 0.62), "right"),
+    ('3" FD-5', "FD-5", (2.15, 2.15, 0.0), "right"),
     ("Level 2", "L2", (0.0, Y1, 0.0), "level"),
 ]
 
@@ -129,7 +137,7 @@ def compute():
                            t=round(start[rid] + _dist_along(RUNS[rid][2], q) / SPEED, 3)))
     end_of = lambda rid: start[rid] + _length(RUNS[rid][2]) / SPEED  # noqa: E731
     drains = [dict(at=d["at"], r=d["r"], t=round(end_of(d["run"]), 3)) for d in DRAINS]
-    sink_t = end_of("san_sink")
+    sink_t = end_of(SINK_RUN)
     runs = [dict(id=rid, svc=svc, r=r, pts=pts, t0=round(start[rid], 3), under=rid in UNDER)
             for rid, (svc, r, pts, _) in RUNS.items()]
     end = max(r["t0"] + _length(r["pts"]) / SPEED for r in runs)
@@ -141,7 +149,7 @@ def compute():
 # ----------------------------------------------------------------- projection shared with three.js
 def view():
     """Fit the scene into the viewBox and return the SVG projection plus the matching 3D camera."""
-    pts = [(x, y, z) for x in (-WALL, X1 + 0.65) for y in (-WALL, Y1) for z in (-0.7, H)]
+    pts = [(x, y, z) for x in (-WALL, X1) for y in (-WALL, Y1) for z in (-1.1, H)]
     xs = [(x - y) * COS for x, y, z in pts]
     ys = [(x + y) * 0.5 - z for x, y, z in pts]
     left, right, top, bottom = 74, 30, 48, 26          # room for labels
@@ -194,8 +202,8 @@ def hero_svg(C, pipe, text, poly, fmt):
     out.append(poly([p(x0, Y1, z1), p(X1, Y1, z1), p(X1, Y1, z0), p(x0, Y1, z0)], "slab-front"))
     out.append(poly([p(X1, y0, z1), p(X1, Y1, z1), p(X1, Y1, z0), p(X1, y0, z0)], "slab-side"))
     out.append(poly(top, "slab-top slab-see"))
-    # the sewer leaving the room is drawn again outside the slab edge
-    out.append(pipe([p(5.05, 2.55, -0.62), p(X1 + 0.02, 2.55, -0.62)], col["san"], width(0.065), delay=0))
+    # the stack below the slab is drawn again where it shows under the slab's front edge
+    out.append(pipe([p(0.4, 2.75, -1.05), p(0.4, 2.75, -0.37)], col["san"], width(0.065), delay=0))
     out.append(poly([p(0, 0, 0), p(0, Y1, 0), p(0, Y1, H), p(0, 0, H)], "wall-face"))
     out.append(poly([p(0, 0, 0), p(X1, 0, 0), p(X1, 0, H), p(0, 0, H)], "wall-face wall-back"))
     out.append(poly([p(-WALL, -WALL, H), p(0, -WALL, H), p(0, Y1, H), p(-WALL, Y1, H)], "wall-top"))
